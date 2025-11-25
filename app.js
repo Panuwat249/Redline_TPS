@@ -1,76 +1,86 @@
-function loadData() {
-  return JSON.parse(localStorage.getItem('redlineData') || '[]');
-}
-function saveData(data) {
-  localStorage.setItem('redlineData', JSON.stringify(data));
-}
+/* Global utilities */
+const monthNames = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const STORAGE_KEY = 'redlineData';
 
-// Handle form submit
-if (document.getElementById('dataForm')) {
-  document.getElementById('dataForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const data = loadData();
 
-    data.push({
-      year: year.value,
-      month: month.value,
-      line: line.value,
-      type: type.value,
-      details: details.value
-    });
+function loadData(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+function saveData(d){ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
 
-    saveData(data);
-    alert('บันทึกสำเร็จ');
-    location.href = 'index.html';
-  });
-}
 
-// Load table
-if (document.getElementById('dataTable')) {
-  const tbody = document.querySelector('#dataTable tbody');
-  const data = loadData().sort((a,b)=> a.year-b.year || a.month-b.month);
+/* Populate months dropdowns */
+['month','mMonth','searchMonth'].forEach(id=>{
+const el = document.getElementById(id);
+if(!el) return;
+el.innerHTML = '<option value="">-- เลือกเดือน --</option>' + monthNames.map(m=>`<option value="${m}">${m}</option>`).join('');
+});
 
-  data.forEach((item,i)=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${item.year}</td>
-      <td>${item.month}</td>
-      <td>${item.line}</td>
-      <td>${item.type}</td>
-      <td>${item.details}</td>
-      <td><button onclick="editData(${i})">แก้ไข</button></td>
-      <td><button onclick="deleteData(${i})">ลบ</button></td>`;
-    tbody.appendChild(tr);
-  });
-}
 
-function deleteData(i){
-  const data = loadData();
-  data.splice(i,1);
-  saveData(data);
-  location.reload();
+/* Populate years for search and dashboard selectors */
+(function fillYears(){
+const years = Array.from({length:21},(_,i)=>2015+i);
+const sy = document.getElementById('searchYear');
+const dy = document.getElementById('dashboardYear');
+if(sy) sy.innerHTML = '<option value="">ทุกปี</option>' + years.map(y=>`<option>${y}</option>`).join('');
+if(dy) dy.innerHTML = '<option value="">(ทั้งหมด)</option>' + years.map(y=>`<option>${y}</option>`).join('');
+})();
+
+
+/* Add form */
+const dataForm = document.getElementById('dataForm');
+if(dataForm){
+dataForm.addEventListener('submit', e =>{
+e.preventDefault();
+const d = loadData();
+const entry = {
+year: document.getElementById('year').value,
+month: document.getElementById('month').value,
+line: document.getElementById('line').value,
+type: document.getElementById('type').value,
+details: document.getElementById('details').value
+};
+d.push(entry);
+saveData(d);
+alert('บันทึกเรียบร้อย');
+location.href = 'index.html';
+});
 }
 
-function editData(i){
-  alert("ระบบแก้ไขสามารถเพิ่มได้ภายหลัง");
+
+/* Render table on index */
+function renderTable(data){
+const tbody = document.querySelector('#dataTable tbody');
+if(!tbody) return;
+tbody.innerHTML = '';
+data.sort((a,b)=> (a.year - b.year) || (monthNames.indexOf(a.month) - monthNames.indexOf(b.month)));
+data.forEach((it,i)=>{
+const tr = document.createElement('tr');
+tr.innerHTML = `
+<td>${it.year}</td>
+<td>${it.month}</td>
+<td>${it.line}</td>
+<td>${it.type}</td>
+<td>${it.details}</td>
+<td><button class="edit-btn" data-i="${i}">แก้ไข</button></td>
+<td><button class="del-btn" data-i="${i}">ลบ</button></td>
+`;
+tbody.appendChild(tr);
+});
+attachRowEvents();
 }
 
-// Dashboard Charts
-if (document.getElementById('barChart')){
-  const data = loadData();
-  const counts = { TSP:0, TSA:0, TA:0 };
-  data.forEach(d=> counts[d.type]++);
 
-  new Chart(barChart,{
-    type:'bar',
-    data:{ labels:['TSP','TSA','TA'], datasets:[{ data:Object.values(counts) }] }
-  });
-
-  const lineCounts = { North:0, West:0 };
-  data.forEach(d=> lineCounts[d.line]++);
-
-  new Chart(pieChart,{
-    type:'pie',
-    data:{ labels:['North','West'], datasets:[{ data:Object.values(lineCounts) }] }
-  });
+function attachRowEvents(){
+document.querySelectorAll('.del-btn').forEach(b=> b.onclick = ()=>{ if(confirm('ลบรายการ?')){ const i = +b.dataset.i; deleteItem(i);} });
+document.querySelectorAll('.edit-btn').forEach(b=> b.onclick = ()=>{ const i = +b.dataset.i; openModal(i);} );
 }
+
+
+function deleteItem(i){ const d = loadData(); d.splice(i,1); saveData(d); renderTable(d); }
+
+
+/* Modal editing */
+let editingIndex = null;
+function openModal(i){
+const d = loadData()[i];
+editingIndex = i;
+documen
