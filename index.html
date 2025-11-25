@@ -1,47 +1,79 @@
 <!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Red Line Data System</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1 align="left">ระบบจัดการข้อมูล TSP / TSA / TA</h1>
-    <nav>
-      <a align="left" href="index.html">หน้าแรก</a>
-      <a align="left" href="add.html">เพิ่มข้อมูล</a>
-      <a align="left" href="dashboard.html">Dashboard</a>
-    </nav>
-  </header>
+<a href="index.html">หน้าแรก</a>
+<a href="add.html">เพิ่มข้อมูล</a>
+<a href="dashboard.html">Dashboard</a>
+</nav>
+</div>
+</header>
 
-  <section class="container">
-    <h2>ข้อมูลทั้งหมด</h2>
-    <div class="controls">
-      <button id="exportExcel">Export Excel</button>
-      <button id="exportPDF">Export PDF</button>
-    </div>
-    <table id="dataTable">
-      <thead>
-        <tr>
-          <th>ปี</th>
-          <th>เดือน</th>
-          <th>สาย</th>
-          <th>ประเภท</th>
-          <th>รายละเอียด</th>
-          <th>แก้ไข</th>
-          <th>ลบ</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
-  <script src="app.js"></script>
+<main class="container">
+<section class="controls-row">
+<div class="search-row">
+<select id="searchYear"></select>
+<select id="searchMonth"></select>
+<select id="searchLine">
+<option value="">ทุกสาย</option>
+<option>North</option>
+<option>West</option>
+<option>Red Line</option>
+</select>
+<select id="searchType">
+<option value="">ทุกประเภท</option>
+<option>TSP</option>
+<option>TSA</option>
+<option>TA</option>
+</select>
+<button id="btnFilter">ค้นหา</button>
+<button id="btnReset">รีเซ็ต</button>
+</div>
+
+
+<div class="export-row">
+<button id="exportExcel">Export Excel</button>
+<button id="exportPDF">Export PDF</button>
+</div>
+</section>
+
+
+<section>
+<table id="dataTable">
+<thead>
+<tr>
+<th>ปี</th>
+<th>เดือน</th>
+<th>สาย</th>
+<th>ประเภท</th>
+<th>รายละเอียด</th>
+<th>แก้ไข</th>
+<th>ลบ</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</section>
+</main>
+
+
+<!-- Edit Modal -->
+<div id="modal" class="modal" aria-hidden="true">
+<div class="modal-dialog">
+<h3>แก้ไขรายการ</h3>
+<form id="editForm">
+<label>ปี <input id="mYear" type="number" required></label>
+<label>เดือน <select id="mMonth"></select></label>
+<label>สาย <select id="mLine"><option>North</option><option>West</option><option>Red Line</option></select></label>
+<label>ประเภท <select id="mType"><option>TSP</option><option>TSA</option><option>TA</option></select></label>
+<label>รายละเอียด <textarea id="mDetails" rows="4"></textarea></label>
+<div class="modal-actions">
+<button type="submit">บันทึก</button>
+<button type="button" id="closeModal">ยกเลิก</button>
+</div>
+</form>
+</div>
+</div>
+
+
+<script src="app.js"></script>
 </body>
 </html>
