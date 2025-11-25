@@ -40,8 +40,8 @@ function populateYears(selectId, start=2560, end=2580, includeBlank=true){
 
 /* Auto-populate on pages */
 ['month','editMonth','monthInput','searchMonth'].forEach(id => populateMonths(id));
-populateYears('searchYear', 2555, 2585);
-populateYears('dashboardYear', 2555, 2585, true);
+populateYears('searchYear', 2564, 2580);
+populateYears('dashboardYear', 2564, 2580, true);
 
 /* ----- Add (add.html) ----- */
 function addData(){
