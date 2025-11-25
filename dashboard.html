@@ -1,86 +1,70 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Line Dashboard</title>
 <link rel="stylesheet" href="style.css">
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<header>
-<div class="header-inner">
-<h1>Dashboard ข้อมูล</h1>
-<nav>
-<a href="index.html" class="btn-add">หน้าแรก</a>
-<a href="add.html" class="btn-add">เพิ่มข้อมูล</a>
-</nav>
+<div class="header-row">
+    <h1>Red Line Dashboard</h1>
 </div>
-</header>
 
+<div class="container">
 
-<main class="container dashboard-grid">
-<section class="chart-card">
-<h2>จำนวนตามประเภท (Bar)</h2>
-<canvas id="chartType"></canvas>
-</section>
+  <!-- Filter controls -->
+  <div class="search-box">
+    <select id="filterYearFrom"></select>
+    <select id="filterYearTo"></select>
+    <select id="filterMonthFrom"></select>
+    <select id="filterMonthTo"></select>
+    <select id="filterLine">
+      <option value="">-- ทุกสาย --</option>
+      <option value="North">North</option>
+      <option value="West">West</option>
+      <option value="Red">Red Line</option>
+    </select>
+    <select id="filterType">
+      <option value="">-- ทุกประเภท --</option>
+      <option value="TSP">TSP</option>
+      <option value="TSA">TSA</option>
+      <option value="TA">TA</option>
+    </select>
+    <button onclick="applyFilters()">ค้นหา</button>
+    <button class="btn-secondary" onclick="resetFilters()">ล้างค่า</button>
+  </div>
 
+  <!-- Result table -->
+  <table id="dashboardTable">
+    <thead>
+      <tr>
+        <th>ปี (พ.ศ.)</th>
+        <th>เดือน</th>
+        <th>สาย</th>
+        <th>ประเภท</th>
+        <th>จำนวน %</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4" style="text-align:right;font-weight:bold">ค่าเฉลี่ย</td>
+        <td id="averageValue">0</td>
+      </tr>
+    </tfoot>
+  </table>
 
-<section class="chart-card">
-<h2>งานตามสาย (Doughnut)</h2>
-<canvas id="chartLine"></canvas>
-</section>
+  <!-- Chart -->
+  <div class="dashboard-grid" style="margin-top:20px;">
+    <div class="chart-card">
+      <canvas id="lineChart"></canvas>
+    </div>
+  </div>
+</div>
 
-
-<section class="chart-card wide">
-<h2>งานต่อเดือน (Stacked / Line)</h2>
-<canvas id="chartMonthly"></canvas>
-</section>
-
-
-<section class="chart-card">
-<h2>งานต่อปี (Line)</h2>
-<canvas id="chartYear"></canvas>
-</section>
-
-
-<section class="chart-controls">
-<label>สีธีม: <input type="color" id="themeColor" value="#B80000"></label>
-<label>เลือกปี: <select id="dashboardYear"></select></label>
-<button id="updateCharts">อัปเดตกราฟ</button>
-</section>
-</main>
-
-
-<script src="app.js"></script>
-</body>
-</html><!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>Dashboard ข้อมูล</h1>
-    <nav>
-      <a href="index.html">หน้าแรก</a>
-      <a href="add.html">เพิ่มข้อมูล</a>
-      <a href="dashboard.html">Dashboard</a>
-    </nav>
-  </header>
-
-  <section class="container">
-    <h2>สรุปข้อมูลรายประเภท</h2>
-    <canvas id="barChart"></canvas>
-
-    <h2>สัดส่วนสาย North/West</h2>
-    <canvas id="pieChart"></canvas>
-  </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>
