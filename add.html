@@ -19,20 +19,35 @@
 </header>
 
 
-<main class="container">
-<form id="dataForm">
-<label>ปี <input type="number" id="year" min="2000" max="2100" required></label>
-<label>เดือน <select id="month"></select></label>
-<label>สาย <select id="line"><option>North</option><option>West</option><option>Red Line</option></select></label>
-<label>ประเภท <select id="type"><option>TSP</option><option>TSA</option><option>TA</option></select></label>
-<label>รายละเอียด <textarea id="details" rows="4" required></textarea></label>
-<div class="form-actions">
-<button type="submit">บันทึก</button>
-<a href="index.html" class="btn-link">ยกเลิก</a>
-</div>
-</form>
-</main>
+<div class="form-box">
 
+    <label>ปี (พ.ศ.)</label>
+    <input type="number" id="yearInput" placeholder="เช่น 2567">
+
+    <label>เดือน</label>
+    <select id="monthInput"></select>
+
+    <label>สาย</label>
+    <select id="lineInput">
+        <option value="North">North</option>
+        <option value="West">West</option>
+        <option value="Red">Red Line</option>
+    </select>
+
+    <label>ประเภท</label>
+    <select id="typeInput">
+        <option value="TSP">TSP</option>
+        <option value="TSA">TSA</option>
+        <option value="TA">TA</option>
+    </select>
+
+    <label>จำนวน</label>
+    <input type="number" id="valueInput">
+
+    <button onclick="addData()">เพิ่มข้อมูล</button>
+    <a href="index.html" class="btn-back">กลับหน้าแรก</a>
+
+</div>
 
 <script src="app.js"></script>
 </body>
