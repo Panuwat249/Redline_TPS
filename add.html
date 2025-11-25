@@ -20,13 +20,22 @@
 <section class="container">
 <form id="dataForm">
 <label>ปี: <input type="number" id="year" required /></label>
-<label>เดือน: <input type="number" id="month" required /></label>
+
+
+<label>เดือน:
+<select id="month"></select>
+</label>
+
+
 <label>สาย:
 <select id="line">
 <option>North</option>
 <option>West</option>
+<option>Red Line</option>
 </select>
 </label>
+
+
 <label>ประเภท:
 <select id="type">
 <option>TSP</option>
@@ -34,6 +43,8 @@
 <option>TA</option>
 </select>
 </label>
+
+
 <label>รายละเอียด:
 <textarea id="details" required></textarea>
 </label>
