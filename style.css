@@ -32,7 +32,7 @@ h1{
   align-items:center;
   justify-content:space-between;
   padding:12px 20px;
-  background:linear-gradient(90deg,var(--red-500),var(--red-700));
+  background:linear-gradient(90deg,var(--white-500),var(--white-700));
   color:#fff;
 }
 
@@ -106,8 +106,8 @@ td .btn{
 /* Buttons link */
 .btn-add, .btn-dashboard, .btn-back, .btn-index {
   background:transparent;
-  color:var(--white-700);
-  border:1px dashed var(--white-500);
+  color:var(--red-700);
+  border:1px dashed var(--red-500);
   padding:8px 10px;
   border-radius:6px;
   text-decoration:none;
