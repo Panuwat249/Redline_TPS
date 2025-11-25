@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap');
+
+
+body {
+font-family: 'Prompt', sans-serif;
+margin: 0;
+background: #fafafa;
+color: #222;
+}
+header {
+background: #b30000;
+padding: 20px;
+color: white;
+}
+nav a {
+margin-right: 20px;
+color: white;
+text-decoration: none;
+}
+.container {
+padding: 20px;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+}
+th, td {
+padding: 10px;
+border: 1px solid #ccc;
+}
+button {
+padding: 10px 20px;
+background: #b30000;
+color: white;
+border: none;
+cursor: pointer;
+}
