@@ -26,73 +26,88 @@
 </header>
 
 
-<main class="container">
-<section class="controls-row">
-<div class="search-row">
-<select id="searchYear"></select>
-<select id="searchMonth"></select>
-<select id="searchLine">
-<option value="">ทุกสาย</option>
-<option>North</option>
-<option>West</option>
-<option>Red Line</option>
-</select>
-<select id="searchType">
-<option value="">ทุกประเภท</option>
-<option>TSP</option>
-<option>TSA</option>
-<option>TA</option>
-</select>
-<button id="btnFilter">ค้นหา</button>
-<button id="btnReset">รีเซ็ต</button>
-</div>
+<!-- Search Filter -->
+    <div class="search-box">
+        <select id="searchYear">
+            <option value="">เลือกปี (พ.ศ.)</option>
+        </select>
 
+        <select id="searchMonth">
+            <option value="">เลือกเดือน</option>
+        </select>
 
-<div class="export-row">
-<button id="exportExcel">Export Excel</button>
-<button id="exportPDF">Export PDF</button>
-</div>
-</section>
+        <select id="searchLine">
+            <option value="">เลือกสาย</option>
+            <option value="North">North</option>
+            <option value="West">West</option>
+            <option value="Red">Red Line</option>
+        </select>
 
+        <select id="searchType">
+            <option value="">เลือกประเภท</option>
+            <option value="TSP">TSP</option>
+            <option value="TSA">TSA</option>
+            <option value="TA">TA</option>
+        </select>
 
-<section>
-<table id="dataTable">
-<thead>
-<tr>
-<th>ปี</th>
-<th>เดือน</th>
-<th>สาย</th>
-<th>ประเภท</th>
-<th>รายละเอียด</th>
-<th>แก้ไข</th>
-<th>ลบ</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</section>
-</main>
+        <button onclick="searchData()">ค้นหา</button>
+        <button onclick="resetSearch()">ล้างค่า</button>
+        <button onclick="exportExcel()">Export Excel</button>
+        <button onclick="exportPDF()">Export PDF</button>
 
+        <a href="add.html" class="btn-add">เพิ่มข้อมูล</a>
+        <a href="dashboard.html" class="btn-dashboard">Dashboard</a>
+    </div>
 
-<!-- Edit Modal -->
-<div id="modal" class="modal" aria-hidden="true">
-<div class="modal-dialog">
-<h3>แก้ไขรายการ</h3>
-<form id="editForm">
-<label>ปี <input id="mYear" type="number" required></label>
-<label>เดือน <select id="mMonth"></select></label>
-<label>สาย <select id="mLine"><option>North</option><option>West</option><option>Red Line</option></select></label>
-<label>ประเภท <select id="mType"><option>TSP</option><option>TSA</option><option>TA</option></select></label>
-<label>รายละเอียด <textarea id="mDetails" rows="4"></textarea></label>
-<div class="modal-actions">
-<button type="submit">บันทึก</button>
-<button type="button" id="closeModal">ยกเลิก</button>
-</div>
-</form>
-</div>
-</div>
+    <!-- Table -->
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ปี (พ.ศ.)</th>
+                <th>เดือน</th>
+                <th>สาย</th>
+                <th>ประเภท</th>
+                <th>จำนวน</th>
+                <th>แก้ไข</th>
+                <th>ลบ</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
+    <!-- Popup Edit -->
+    <div id="editPopup" class="popup">
+        <div class="popup-content">
+            <h2>แก้ไขข้อมูล</h2>
 
-<script src="app.js"></script>
+            <label>ปี (พ.ศ.)</label>
+            <input type="number" id="editYear">
+
+            <label>เดือน</label>
+            <select id="editMonth"></select>
+
+            <label>สาย</label>
+            <select id="editLine">
+                <option value="North">North</option>
+                <option value="West">West</option>
+                <option value="Red">Red Line</option>
+            </select>
+
+            <label>ประเภท</label>
+            <select id="editType">
+                <option value="TSP">TSP</option>
+                <option value="TSA">TSA</option>
+                <option value="TA">TA</option>
+            </select>
+
+            <label>จำนวน</label>
+            <input type="number" id="editValue">
+
+            <button onclick="saveEdit()">บันทึก</button>
+            <button onclick="closePopup()">ปิด</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
