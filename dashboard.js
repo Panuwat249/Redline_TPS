@@ -9,7 +9,7 @@ function populateFilters() {
   const monthTo = document.getElementById('filterMonthTo');
 
   let htmlYear = '';
-  for(let y=2555;y<=2585;y++){ htmlYear += `<option value="${y}">${y}</option>`; }
+  for(let y=2564;y<=2580;y++){ htmlYear += `<option value="${y}">${y}</option>`; }
   yearFrom.innerHTML = htmlYear; yearTo.innerHTML = htmlYear;
 
   let htmlMonth = '';
@@ -107,7 +107,7 @@ function renderChart(data){
     data:{
       labels:labels,
       datasets:[
-        {label:'จำนวน', data:values, borderColor:'#B80000', fill:false, tension:0.2},
+        {label:'จำนวน %', data:values, borderColor:'#B80000', fill:false, tension:0.2},
         {label:'ค่าเฉลี่ย', data:avgArray, borderColor:'#FF8A65', borderDash:[5,5], fill:false}
       ]
     },
