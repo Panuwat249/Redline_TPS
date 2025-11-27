@@ -191,8 +191,8 @@ function populateYears(selectId, start=2560, end=2585, includeBlank=true){
 
 /* Call populators for known IDs (if present) */
 ['month','editMonth','monthInput','searchMonth'].forEach(id => populateMonths(id));
-populateYears('searchYear', 2555, 2585);
-populateYears('dashboardYear', 2555, 2585, true);
+populateYears('searchYear', 2564, 2585);
+populateYears('dashboardYear', 2564, 2585, true);
 
 /* ---------- Table rendering ---------- */
 async function renderTable(filter = {}){
