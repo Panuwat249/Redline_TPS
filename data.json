@@ -1,0 +1,20 @@
+{
+  "month": "มิถุนายน 2569 (30 มิ.ย. 69)",
+  "punctuality": 100,
+  "reliability": 100,
+  "readiness": 100,
+
+  "north_distance": 119894,
+  "west_distance": 50581,
+  "total_distance": 170475,
+
+  "north_trip": 5340,
+  "west_trip": 3479,
+  "total_trip": 8819,
+
+  "cancel_north": 0,
+  "cancel_west": 0,
+  "cancel_total": 0,
+
+  "graph": "uploads/graph.png"
+}
