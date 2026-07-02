@@ -2,7 +2,6 @@ const statistics = [
 
 {
 id:"2026-06",
-
 month:"มิถุนายน 2569",
 
 onTime:{
@@ -40,7 +39,47 @@ north:0,
 west:0,
 total:0
 }
+},
 
+{
+id:"2026-07",
+month:"กรกฎาคม 2569",
+
+onTime:{
+north:99.95,
+west:100,
+total:99.97
+},
+
+availability:{
+north:100,
+west:100,
+total:100
+},
+
+reliability:{
+north:99.98,
+west:100,
+total:99.99
+},
+
+distance:{
+north:120500,
+west:51000,
+total:171500
+},
+
+trips:{
+north:5400,
+west:3500,
+total:8900
+},
+
+cancelled:{
+north:0,
+west:0,
+total:0
+}
 }
 
 ];
