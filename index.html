@@ -1,191 +1,157 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>สถิติการให้บริการรถไฟฟ้าสายสีแดง</title>
 
-<link rel="stylesheet" href="css/style.css">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>
+Dashboard รถไฟฟ้าสายสีแดง
+</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800;900&display=swap"
+rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 <body>
 
 <header class="hero">
 
-    <div class="overlay">
+<div class="hero-content">
 
-        <h1>
-            ระดับการให้บริการระบบรถไฟฟ้าชานเมืองสายสีแดง
-        </h1>
+<h1>
+ระดับการให้บริการ
+ระบบรถไฟฟ้าชานเมืองสายสีแดง
+</h1>
 
-        <div id="monthText"></div>
+<p id="monthTitle"></p>
 
-    </div>
+<select id="monthSelector"></select>
+
+</div>
 
 </header>
 
-<div class="container">
+<section class="dashboard">
 
-    <div class="top-bar">
+<div class="card red">
 
-        <select id="monthSelector"></select>
+<h2>ความตรงต่อเวลา</h2>
 
-        <a href="admin/index.html" class="admin-btn">
-            จัดการข้อมูล
-        </a>
+<h1 id="ontime"></h1>
 
-    </div>
+<div class="detail">
 
-    <div class="grid">
+<div>
+<span>สายเหนือ</span>
+<p id="ontimeNorth"></p>
+</div>
 
-        <div class="card">
-            <h2>ความตรงต่อเวลา</h2>
-
-            <div class="stat-row">
-
-                <div>
-                    <span>สายเหนือ</span>
-                    <h3 id="ontimeNorth"></h3>
-                </div>
-
-                <div>
-                    <span>สายตะวันตก</span>
-                    <h3 id="ontimeWest"></h3>
-                </div>
-
-                <div>
-                    <span>รวม</span>
-                    <h3 id="ontimeTotal"></h3>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>ความพร้อมของขบวนรถ</h2>
-
-            <div class="stat-row">
-
-                <div>
-                    <span>สายเหนือ</span>
-                    <h3 id="availNorth"></h3>
-                </div>
-
-                <div>
-                    <span>สายตะวันตก</span>
-                    <h3 id="availWest"></h3>
-                </div>
-
-                <div>
-                    <span>รวม</span>
-                    <h3 id="availTotal"></h3>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>ความน่าเชื่อถือ</h2>
-
-            <div class="stat-row">
-
-                <div>
-                    <span>สายเหนือ</span>
-                    <h3 id="reliNorth"></h3>
-                </div>
-
-                <div>
-                    <span>สายตะวันตก</span>
-                    <h3 id="reliWest"></h3>
-                </div>
-
-                <div>
-                    <span>รวม</span>
-                    <h3 id="reliTotal"></h3>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>ระยะทางให้บริการ</h2>
-
-            <div class="stat-row">
-
-                <div>
-                    <span>สายเหนือ</span>
-                    <h3 id="distanceNorth"></h3>
-                </div>
-
-                <div>
-                    <span>สายตะวันตก</span>
-                    <h3 id="distanceWest"></h3>
-                </div>
-
-                <div>
-                    <span>รวม</span>
-                    <h3 id="distanceTotal"></h3>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>จำนวนเที่ยววิ่ง</h2>
-
-            <div class="stat-row">
-
-                <div>
-                    <span>สายเหนือ</span>
-                    <h3 id="tripNorth"></h3>
-                </div>
-
-                <div>
-                    <span>สายตะวันตก</span>
-                    <h3 id="tripWest"></h3>
-                </div>
-
-                <div>
-                    <span>รวม</span>
-                    <h3 id="tripTotal"></h3>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>ยกเลิกเที่ยววิ่ง</h2>
-
-            <div class="stat-row">
-
-                <div>
-                    <span>สายเหนือ</span>
-                    <h3 id="cancelNorth"></h3>
-                </div>
-
-                <div>
-                    <span>สายตะวันตก</span>
-                    <h3 id="cancelWest"></h3>
-                </div>
-
-                <div>
-                    <span>รวม</span>
-                    <h3 id="cancelTotal"></h3>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    <div class="chart-box">
-
-        <canvas id="historyChart"></canvas>
-
-    </div>
+<div>
+<span>สายตะวันตก</span>
+<p id="ontimeWest"></p>
+</div>
 
 </div>
+
+</div>
+
+<div class="card blue">
+
+<h2>ความพร้อมขบวนรถ</h2>
+
+<h1 id="availability"></h1>
+
+<div class="detail">
+
+<div>
+<span>สายเหนือ</span>
+<p id="availabilityNorth"></p>
+</div>
+
+<div>
+<span>สายตะวันตก</span>
+<p id="availabilityWest"></p>
+</div>
+
+</div>
+
+</div>
+
+<div class="card green">
+
+<h2>ความน่าเชื่อถือ</h2>
+
+<h1 id="reliability"></h1>
+
+<div class="detail">
+
+<div>
+<span>สายเหนือ</span>
+<p id="reliabilityNorth"></p>
+</div>
+
+<div>
+<span>สายตะวันตก</span>
+<p id="reliabilityWest"></p>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>ระยะทางให้บริการ</h2>
+
+<h1 id="distance"></h1>
+<p>กิโลเมตร</p>
+
+</div>
+
+<div class="card">
+
+<h2>จำนวนเที่ยวบริการ</h2>
+
+<h1 id="trips"></h1>
+<p>เที่ยว</p>
+
+</div>
+
+<div class="card">
+
+<h2>ยกเลิกเที่ยววิ่ง</h2>
+
+<h1 id="cancelled"></h1>
+<p>เที่ยว</p>
+
+</div>
+
+</section>
+
+<section class="chart-section">
+
+<div class="chart-card">
+
+<h2>
+แนวโน้มความตรงต่อเวลา
+</h2>
+
+<canvas id="historyChart">
+</canvas>
+
+</div>
+
+</section>
 
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
