@@ -1,35 +1,19 @@
-fetch("data.json")
-.then(res => res.json())
-.then(data => {
+let defaultData = {
+month:"มิถุนายน 2569",
+punctuality:100,
+reliability:100,
+readiness:100,
+total_distance:170475,
+total_trip:8819,
+cancel_total:0
+};
+
+let data = JSON.parse(localStorage.getItem("dashboardData")) || defaultData;
 
 document.getElementById("month").innerText = data.month;
-
 document.getElementById("punctuality").innerText = data.punctuality + "%";
 document.getElementById("reliability").innerText = data.reliability + "%";
 document.getElementById("readiness").innerText = data.readiness + "%";
-
-document.getElementById("north_distance").innerText =
-data.north_distance.toLocaleString();
-
-document.getElementById("west_distance").innerText =
-data.west_distance.toLocaleString();
-
-document.getElementById("total_distance").innerText =
-data.total_distance.toLocaleString();
-
-document.getElementById("north_trip").innerText =
-data.north_trip.toLocaleString();
-
-document.getElementById("west_trip").innerText =
-data.west_trip.toLocaleString();
-
-document.getElementById("total_trip").innerText =
-data.total_trip.toLocaleString();
-
-document.getElementById("cancel_north").innerText = data.cancel_north;
-document.getElementById("cancel_west").innerText = data.cancel_west;
+document.getElementById("total_distance").innerText = data.total_distance.toLocaleString();
+document.getElementById("total_trip").innerText = data.total_trip.toLocaleString();
 document.getElementById("cancel_total").innerText = data.cancel_total;
-
-document.getElementById("graph").src = data.graph;
-
-});
