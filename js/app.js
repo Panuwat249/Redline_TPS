@@ -1,56 +1,138 @@
 const selector =
-document.getElementById("monthSelector");
+document.getElementById(
+"monthSelector"
+);
 
 statistics.forEach(item=>{
 
-const option =
-document.createElement("option");
+const op =
+document.createElement(
+"option"
+);
 
-option.value=item.id;
-option.textContent=item.month;
+op.value=item.id;
 
-selector.appendChild(option);
+op.textContent=item.month;
+
+selector.appendChild(op);
 
 });
 
 showData(statistics[0]);
 
-selector.addEventListener("change",()=>{
+selector.addEventListener(
+"change",
+()=>{
 
-const found =
+const item =
 statistics.find(
-s=>s.id===selector.value
+x=>x.id===selector.value
 );
 
-showData(found);
+showData(item);
 
-});
+}
+);
 
 function showData(data){
 
-monthText.innerHTML=data.month;
+monthTitle.innerText =
+data.month;
 
-ontimeNorth.innerHTML=data.onTime.north+"%";
-ontimeWest.innerHTML=data.onTime.west+"%";
-ontimeTotal.innerHTML=data.onTime.total+"%";
+ontime.innerText =
+data.onTime.total+"%";
 
-availNorth.innerHTML=data.availability.north+"%";
-availWest.innerHTML=data.availability.west+"%";
-availTotal.innerHTML=data.availability.total+"%";
+ontimeNorth.innerText =
+data.onTime.north+"%";
 
-reliNorth.innerHTML=data.reliability.north+"%";
-reliWest.innerHTML=data.reliability.west+"%";
-reliTotal.innerHTML=data.reliability.total+"%";
+ontimeWest.innerText =
+data.onTime.west+"%";
 
-distanceNorth.innerHTML=data.distance.north.toLocaleString();
-distanceWest.innerHTML=data.distance.west.toLocaleString();
-distanceTotal.innerHTML=data.distance.total.toLocaleString();
+availability.innerText =
+data.availability.total+"%";
 
-tripNorth.innerHTML=data.trips.north.toLocaleString();
-tripWest.innerHTML=data.trips.west.toLocaleString();
-tripTotal.innerHTML=data.trips.total.toLocaleString();
+availabilityNorth.innerText =
+data.availability.north+"%";
 
-cancelNorth.innerHTML=data.cancelled.north;
-cancelWest.innerHTML=data.cancelled.west;
-cancelTotal.innerHTML=data.cancelled.total;
+availabilityWest.innerText =
+data.availability.west+"%";
+
+reliability.innerText =
+data.reliability.total+"%";
+
+reliabilityNorth.innerText =
+data.reliability.north+"%";
+
+reliabilityWest.innerText =
+data.reliability.west+"%";
+
+distance.innerText =
+data.distance.total
+.toLocaleString();
+
+trips.innerText =
+data.trips.total
+.toLocaleString();
+
+cancelled.innerText =
+data.cancelled.total;
 }
+
+const chartLabels =
+statistics.map(
+x=>x.month
+);
+
+const chartValues =
+statistics.map(
+x=>x.onTime.total
+);
+
+new Chart(
+
+document.getElementById(
+"historyChart"
+),
+
+{
+type:"line",
+
+data:{
+
+labels:chartLabels,
+
+datasets:[
+{
+label:
+"ความตรงต่อเวลา",
+
+data:chartValues,
+
+borderColor:"#d90429",
+
+backgroundColor:
+"rgba(217,4,41,.15)",
+
+fill:true,
+
+tension:.3
+}
+]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{
+display:true
+}
+}
+
+}
+
+}
+
+);
