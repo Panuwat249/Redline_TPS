@@ -3,46 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Executive Dashboard</title>
+<title>ระดับการให้บริการระบบรถไฟฟ้าชานเมืองสายสีแดง</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <h1>Executive Dashboard</h1>
-    <div>
-        <select id="month"></select>
-        <select id="year"></select>
-        <button onclick="loadData()">โหลดข้อมูล</button>
-        <button onclick="goAdmin()">Admin</button>
-    </div>
+<header class="main-header">
+    <h1>ระดับการให้บริการระบบรถไฟฟ้าชานเมืองสายสีแดง</h1>
 </header>
 
-<div class="container">
+<div class="dashboard">
 
-    <div class="kpi-grid" id="kpiGrid"></div>
+    <!-- เดือน -->
+    <section class="month-section">
+        <h2 contenteditable="true">เดือนมิถุนายน 2569 (30 มิ.ย. 69)</h2>
+    </section>
 
-    <div class="section">
-        <h2>อัปโหลดกราฟ</h2>
-        <input type="file" id="graphUpload">
-        <img id="graphPreview">
-    </div>
+    <!-- การยกเลิกเที่ยววิ่ง -->
+    <section class="cancel-box">
+        <h3>การยกเลิกเที่ยววิ่ง (เที่ยว)</h3>
+        <div class="cancel-grid">
+            <div class="mini-card" contenteditable="true">0</div>
+            <div class="mini-card" contenteditable="true">0</div>
+            <div class="mini-card" contenteditable="true">0</div>
+        </div>
+    </section>
 
-    <div class="section">
-        <h2>Station Ranking</h2>
-        <table id="stationTable"></table>
-    </div>
+    <!-- ความตรงต่อเวลา -->
+    <section class="metric-group">
+        <div class="metric-title">
+            ⏱ ความตรงต่อเวลา
+            <span>ขบวนรถล่าช้าไม่เกิน 10 นาที</span>
+        </div>
 
-    <div class="section">
-        <button onclick="exportPDF()">Export PDF</button>
-        <button onclick="exportExcel()">Export Excel</button>
-        <button onclick="backupData()">Backup JSON</button>
-    </div>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <p>สายเหนือ</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+
+            <div class="metric-card light">
+                <p>สายตะวันตก</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+
+            <div class="metric-card">
+                <p>ทั้งสองสาย</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- ความน่าเชื่อถือ -->
+    <section class="metric-group">
+        <div class="metric-title">
+            🚆 ความน่าเชื่อถือ
+            <span>ตามจำนวนเที่ยวที่ให้บริการจริง</span>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric-card">
+                <p>สายเหนือ</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+
+            <div class="metric-card light">
+                <p>สายตะวันตก</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+
+            <div class="metric-card">
+                <p>ทั้งสองสาย</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- ความพร้อมขบวนรถ -->
+    <section class="metric-group">
+        <div class="metric-title">
+            👷 ความพร้อมของขบวนรถ
+            <span>ตามจำนวนขบวนรถที่ให้บริการจริง</span>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric-card">
+                <p>สายเหนือ</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+
+            <div class="metric-card light">
+                <p>สายตะวันตก</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+
+            <div class="metric-card">
+                <p>ทั้งสองสาย</p>
+                <h1 contenteditable="true">100%</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Stats -->
+    <section class="bottom-stats">
+
+        <div class="stat-section">
+            <h3>↔ ระยะทางที่วิ่งให้บริการ (กิโลเมตร)</h3>
+            <div class="bottom-grid">
+                <div class="bottom-card">
+                    <p>สายเหนือ</p>
+                    <h2 contenteditable="true">119,894</h2>
+                </div>
+                <div class="bottom-card light">
+                    <p>สายตะวันตก</p>
+                    <h2 contenteditable="true">50,581</h2>
+                </div>
+                <div class="bottom-card">
+                    <p>ทั้งสองสาย</p>
+                    <h2 contenteditable="true">170,475</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-section">
+            <h3>🧮 จำนวนเที่ยวที่ให้บริการ (เที่ยว)</h3>
+            <div class="bottom-grid">
+                <div class="bottom-card">
+                    <p>สายเหนือ</p>
+                    <h2 contenteditable="true">5,340</h2>
+                </div>
+                <div class="bottom-card light">
+                    <p>สายตะวันตก</p>
+                    <h2 contenteditable="true">3,479</h2>
+                </div>
+                <div class="bottom-card">
+                    <p>ทั้งสองสาย</p>
+                    <h2 contenteditable="true">8,819</h2>
+                </div>
+            </div>
+        </div>
+
+    </section>
 
 </div>
 
 <script src="storage.js"></script>
 <script src="app.js"></script>
-<script src="export.js"></script>
+
 </body>
 </html>
