@@ -1,65 +1,225 @@
-body{
-    margin:0;
-    font-family:Sarabun,sans-serif;
-    background:#f4f4f4;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-header{
-    background:#9b111e;
-    color:white;
-    padding:20px;
-    display:flex;
-    justify-content:space-between;
+body {
+    font-family: 'Sarabun', sans-serif;
+    background: #efefef;
+    color: #333;
 }
 
-.container{
-    padding:30px;
+/* Header */
+.header {
+    padding: 20px 40px 10px;
+    background: #efefef;
 }
 
-.kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
+.header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #444;
+    border-bottom: 4px solid #d61f1f;
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
-.card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
+/* Top area */
+.top-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
 }
 
-.section{
-    background:white;
-    padding:20px;
-    margin-top:20px;
-    border-radius:10px;
+.section-title {
+    font-size: 52px;
+    font-weight: 800;
+    color: #a00000;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+.section-title small {
+    display: block;
+    font-size: 22px;
+    color: #444;
+    font-weight: 400;
+    margin-top: 5px;
 }
 
-th,td{
-    border:1px solid #ddd;
-    padding:10px;
-    text-align:center;
+select {
+    padding: 10px 18px;
+    font-size: 18px;
+    border: 2px solid #a00000;
+    border-radius: 8px;
+    background: white;
 }
 
-button{
-    padding:10px 15px;
-    margin:5px;
-    cursor:pointer;
+/* Dashboard */
+.dashboard {
+    padding: 10px 40px 40px;
 }
 
-img{
-    max-width:100%;
-    margin-top:20px;
+/* Main KPI Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
 }
 
-.login-box{
-    width:300px;
-    margin:100px auto;
-    background:white;
-    padding:20px;
+/* Card */
+.card {
+    background: #e5e5e5;
+    min-height: 190px;
+    padding: 18px;
+    position: relative;
+    border-right: 8px solid #980000;
+}
+
+.card h3 {
+    font-size: 34px;
+    font-weight: 500;
+    color: #b10000;
+    margin-bottom: 25px;
+}
+
+.big-number {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 90px;
+    font-weight: 800;
+    color: #980000;
+}
+
+/* Stat Section */
+.small-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat-box {
+    background: #e5e5e5;
+    min-height: 170px;
+    padding: 20px;
+    position: relative;
+    border-right: 8px solid #980000;
+}
+
+.stat-box h4 {
+    font-size: 34px;
+    font-weight: 500;
+    color: #b10000;
+}
+
+.stat-box .number {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 68px;
+    font-weight: 800;
+    color: #980000;
+}
+
+/* Cancellation Box */
+.cancel-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.cancel-item {
+    flex: 1;
+    background: #e5e5e5;
+    text-align: center;
+    padding: 20px;
+    border-right: 8px solid #980000;
+}
+
+.cancel-item h5 {
+    font-size: 26px;
+    color: #444;
+}
+
+.cancel-item .cancel-number {
+    font-size: 64px;
+    font-weight: 800;
+    color: #b10000;
+}
+
+/* Graph */
+.graph-section {
+    margin-top: 20px;
+}
+
+.graph-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.graph-box h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.graph-box img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    background: #f7f7f7;
+    border-radius: 10px;
+}
+
+/* Upload */
+.upload-box {
+    margin-top: 20px;
+}
+
+.upload-box input {
+    font-size: 16px;
+}
+
+/* Footer */
+.footer {
+    background: white;
+    padding: 18px;
+    text-align: center;
+    font-size: 18px;
+    border-top: 3px solid #d61f1f;
+    color: #555;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .grid,
+    .small-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .top-control {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .header h1 {
+        font-size: 30px;
+    }
+
+    .section-title {
+        font-size: 36px;
+    }
+
+    .big-number {
+        font-size: 60px;
+    }
+
+    .stat-box .number {
+        font-size: 50px;
+    }
 }
