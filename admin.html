@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+<h1>ระบบหลังบ้าน รฟฟท.</h1>
+<a href="index.html" class="admin-btn">กลับ Dashboard</a>
+</div>
+
+<div class="admin-form">
+
+<input id="month" placeholder="เดือน">
+
+<input id="punctuality" type="number" placeholder="ความตรงต่อเวลา">
+
+<input id="reliability" type="number" placeholder="ความน่าเชื่อถือ">
+
+<input id="readiness" type="number" placeholder="ความพร้อมขบวนรถ">
+
+<input id="total_distance" type="number" placeholder="ระยะทาง">
+
+<input id="total_trip" type="number" placeholder="จำนวนเที่ยว">
+
+<input id="cancel_total" type="number" placeholder="ยกเลิกเที่ยว">
+
+<label>อัปโหลดกราฟ</label>
+<input id="graphUpload" type="file">
+
+<button onclick="saveData()">บันทึกข้อมูล</button>
+
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
