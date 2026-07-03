@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>ระดับการให้บริการรถไฟฟ้าชานเมืองสายสีแดง</title>
 
-    <link rel="stylesheet" href="css/style.css" />
+    css/style.css
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    />
+    https://fonts.googleapis.com
+    https://fonts.gstatic.com
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800;900&display=swap
+
+    https://cdn.jsdelivr.net/npm/chart.jsscript>
 </head>
 
 <body>
@@ -34,6 +34,7 @@
 
                 <div class="brand">
                     <div class="brand-logo">RL</div>
+
                     <div>
                         <div class="brand-name">บริษัท รถไฟฟ้า ร.ฟ.ท. จำกัด</div>
                         <div class="brand-desc">ฝ่ายควบคุมการเดินรถ</div>
@@ -55,7 +56,7 @@
                     </div>
 
                     <h1>
-                        ระดับการให้บริการ<br>
+                        ระดับการให้บริการ<br />
                         ระบบรถไฟฟ้าชานเมืองสายสีแดง
                     </h1>
 
@@ -69,262 +70,4 @@
                     </div>
 
                 </div>
-
-                <aside class="filter-card">
-
-                    <div class="filter-header">
-                        <span></span>
-                        เลือกช่วงเดือน
-                    </div>
-
-                    <div class="filter-field">
-                        <label for="startMonth">เดือนเริ่มต้น</label>
-                        <select id="startMonth"></select>
-                    </div>
-
-                    <div class="filter-field">
-                        <label for="endMonth">เดือนสิ้นสุด</label>
-                        <select id="endMonth"></select>
-                    </div>
-
-                    <button id="applyBtn">
-                        แสดงผล Dashboard
-                    </button>
-
-                    <p>
-                        เลือกเดือนเดียวจะแสดงค่าของเดือนนั้น หากเลือกหลายเดือนจะแสดงค่าเฉลี่ย
-                    </p>
-
-                </aside>
-
-            </section>
-
-        </div>
-
-    </header>
-
-    <main class="container">
-
-        <section class="summary-row">
-
-            <div class="summary-card">
-                <div class="summary-icon red-icon">📅</div>
-                <div>
-                    <span>ช่วงข้อมูลที่แสดง</span>
-                    <strong id="summaryPeriod">-</strong>
-                </div>
-            </div>
-
-            <div class="summary-card">
-                <div class="summary-icon blue-icon">∑</div>
-                <div>
-                    <span>รูปแบบการคำนวณ</span>
-                    <strong id="calculationMode">-</strong>
-                </div>
-            </div>
-
-        </section>
-
-        <section class="section-title">
-
-            <div>
-                <p>KPI SUMMARY</p>
-                <h2>ดัชนีหลักด้านคุณภาพการให้บริการ</h2>
-            </div>
-
-            <span>รวมทั้ง 2 สาย</span>
-
-        </section>
-
-        <section class="kpi-grid">
-
-            <article class="kpi-card red-card">
-
-                <div class="kpi-top">
-                    <div>
-                        <p>KPI 01</p>
-                        <h3>ความต่อต่อเวลา</h3>
-                    </div>
-                    <div class="kpi-badge">%</div>
-                </div>
-
-                <div class="kpi-value-area">
-                    <span>รวมทั้ง 2 สาย</span>
-                    <strong id="onTimeTotal">-</strong>
-                </div>
-
-                <div class="split-grid">
-
-                    <div>
-                        <small>สายเหนือ</small>
-                        <b id="onTimeNorth">-</b>
-                    </div>
-
-                    <div>
-                        <small>สายตะวันตก</small>
-                        <b id="onTimeWest">-</b>
-                    </div>
-
-                </div>
-
-            </article>
-
-            <article class="kpi-card purple-card">
-
-                <div class="kpi-top">
-                    <div>
-                        <p>KPI 02</p>
-                        <h3>ความน่าเชื่อถือ</h3>
-                    </div>
-                    <div class="kpi-badge">%</div>
-                </div>
-
-                <div class="kpi-value-area">
-                    <span>รวมทั้ง 2 สาย</span>
-                    <strong id="reliabilityTotal">-</strong>
-                </div>
-
-                <div class="split-grid">
-
-                    <div>
-                        <small>สายเหนือ</small>
-                        <b id="reliabilityNorth">-</b>
-                    </div>
-
-                    <div>
-                        <small>สายตะวันตก</small>
-                        <b id="reliabilityWest">-</b>
-                    </div>
-
-                </div>
-
-            </article>
-
-            <article class="kpi-card blue-card">
-
-                <div class="kpi-top">
-                    <div>
-                        <p>KPI 03</p>
-                        <h3>ความพร้อมของขบวนรถไฟ</h3>
-                    </div>
-                    <div class="kpi-badge">%</div>
-                </div>
-
-                <div class="kpi-value-area">
-                    <span>รวมทั้ง 2 สาย</span>
-                    <strong id="availabilityTotal">-</strong>
-                </div>
-
-                <div class="split-grid">
-
-                    <div>
-                        <small>สายเหนือ</small>
-                        <b id="availabilityNorth">-</b>
-                    </div>
-
-                    <div>
-                        <small>สายตะวันตก</small>
-                        <b id="availabilityWest">-</b>
-                    </div>
-
-                </div>
-
-            </article>
-
-        </section>
-
-        <section class="section-title operation-title">
-
-            <div>
-                <p>OPERATION SUMMARY</p>
-                <h2>ข้อมูลการเดินรถและการให้บริการ</h2>
-            </div>
-
-        </section>
-
-        <section class="operation-grid">
-
-            <article class="operation-card orange-line">
-
-                <div class="operation-top">
-                    <div>
-                        <p>OPR 01</p>
-                        <h3>ระยะทางที่วิ่งให้บริการ</h3>
-                    </div>
-                    <span>กม.</span>
-                </div>
-
-                <div class="operation-main" id="distanceTotal">-</div>
-
-                <div class="operation-split">
-                    <div>
-                        <small>สายเหนือ</small>
-                        <b id="distanceNorth">-</b>
-                    </div>
-
-                    <div>
-                        <small>สายตะวันตก</small>
-                        <b id="distanceWest">-</b>
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="operation-card green-line">
-
-                <div class="operation-top">
-                    <div>
-                        <p>OPR 02</p>
-                        <h3>จำนวนเที่ยววิ่งที่ให้บริการ</h3>
-                    </div>
-                    <span>เที่ยว</span>
-                </div>
-
-                <div class="operation-main" id="tripsTotal">-</div>
-
-                <div class="operation-split">
-                    <div>
-                        <small>สายเหนือ</small>
-                        <b id="tripsNorth">-</b>
-                    </div>
-
-                    <div>
-                        <small>สายตะวันตก</small>
-                        <b id="tripsWest">-</b>
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="operation-card red-line">
-
-                <div class="operation-top">
-                    <div>
-                        <p>OPR 03</p>
-                        <h3>การยกเลิกเที่ยววิ่ง</h3>
-                    </div>
-                    <span>เที่ยว</span>
-                </div>
-
-                <div class="operation-main" id="cancelledTotal">-</div>
-
-                <div class="operation-split">
-                    <div>
-                        <small>สายเหนือ</small>
-                        <b id="cancelledNorth">-</b>
-                    </div>
-
-                    <div>
-                        <small>สายตะวันตก</small>
-                        <b id="cancelledWest">-</b>
-                    </div>
-                </div>
-
-            </article>
-
-        </section>
-
-        <section class="chart-card">
-
-            <div class="chart-header">
 
