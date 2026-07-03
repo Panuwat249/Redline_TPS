@@ -287,6 +287,12 @@ function updateChart(items) {
             responsive: true,
             maintainAspectRatio: false,
 
+            layout: {
+                padding: {
+                    top: 28
+                }
+            },
+
             plugins: {  
                 datalabels: {
                     anchor: "end",
