@@ -1000,3 +1000,28 @@ footer {
         padding: 8px;
     }
 }
+
+/* =========================
+   PINK THEME: PUNCTUALITY 5 MIN
+========================= */
+
+.pink-theme::before {
+    background: #f43f5e;
+}
+
+.pink-theme .card-topline {
+    background: linear-gradient(90deg, #9f1239, #f43f5e);
+}
+
+.pink-theme .card-unit {
+    background: linear-gradient(135deg, #9f1239, #f43f5e);
+}
+
+.pink-theme .total-box-label {
+    color: #9f1239;
+    background: #ffe4e6;
+}
+
+.pink-theme .total-box-value {
+    color: #9f1239;
+}
