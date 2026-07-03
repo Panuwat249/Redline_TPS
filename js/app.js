@@ -89,6 +89,14 @@ function calculateDisplayData(items) {
             total: average(items, "onTime", "total")
         },
 
+        
+        punctuality5: {
+            north: average(items, "punctuality5", "north"),
+            west: average(items, "punctuality5", "west"),
+            total: average(items, "punctuality5", "total")
+        },
+
+
         reliability: {
             north: average(items, "reliability", "north"),
             west: average(items, "reliability", "west"),
@@ -158,6 +166,10 @@ function updateKpiCards(data) {
     setText("onTimeNorth", formatPercent(data.onTime.north));
     setText("onTimeWest", formatPercent(data.onTime.west));
 
+    setText("punctuality5Total", formatPercent(data.punctuality5.total));
+    setText("punctuality5North", formatPercent(data.punctuality5.north));
+    setText("punctuality5West", formatPercent(data.punctuality5.west));
+    
     setText("reliabilityTotal", formatPercent(data.reliability.total));
     setText("reliabilityNorth", formatPercent(data.reliability.north));
     setText("reliabilityWest", formatPercent(data.reliability.west));
@@ -225,7 +237,7 @@ function updateChart(items) {
 
             datasets: [
                 {
-                    label: "ความต่อต่อเวลา",
+                    label: "ความต่อต่อเวลาล่าช้าไม่เกิน 10 นาที",
                     data: items.map(item => item.onTime.total),
                     backgroundColor: "rgba(239, 35, 60, 0.88)",
                     borderColor: "rgba(181, 18, 27, 1)",
@@ -234,6 +246,18 @@ function updateChart(items) {
                     barPercentage: 0.7,
                     categoryPercentage: 0.72
                 },
+                
+                {
+                    label: "ความตรงต่อเวลาล่าช้าไม่เกิน 5 นาที",
+                    data: items.map(item => item.punctuality5.total),
+                    backgroundColor: "rgba(244, 63, 94, 0.78)",
+                    borderColor: "rgba(190, 18, 60, 1)",
+                    borderWidth: 1,
+                    borderRadius: 14,
+                    barPercentage: 0.7,
+                    categoryPercentage: 0.72
+                },
+
                 {
                     label: "ความน่าเชื่อถือ",
                     data: items.map(item => item.reliability.total),
