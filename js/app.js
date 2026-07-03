@@ -317,9 +317,10 @@ function updateChart(items) {
 
             scales: {
                 y: {
-                    min: 90,
+                    min: 99,
                     max: 100,
                     ticks: {
+                        stepSize: 0.2,
                         color: "#64748b",
                         callback: value => value + "%",
                         font: {
