@@ -1,107 +1,109 @@
-let performanc*Chart = null;
+let performanceChart = null;
 
-const startMonthSel*ct = document.getElementById("star*Month");
-const endMonthSelect = do*ument.getElementById("endMonth");
-*onst applyBtn = document.getElemen*ById("applyBtn");
+const startMonthSelect = document.getElementById("startMonth");
+const endMonthSelect = document.getElementById("endMonth");
+const applyBtn = document.getElementById("applyBtn");
 
 init();
 
-functi*n init() {
-    populateMonthOption*();
+function init() {
+    populateMonthOptions();
 
-    const lastIndex = statist*cs.length - 1;
+    const lastIndex = statistics.length - 1;
 
-    startMonthSele*t.value = statistics[lastIndex].id*
-    endMonthSelect.value = statis*ics[lastIndex].id;
+    startMonthSelect.value = statistics[lastIndex].id;
+    endMonthSelect.value = statistics[lastIndex].id;
 
-    renderDash*oard();
+    renderDashboard();
 
-    applyBtn.addEventList*ner("click", renderDashboard);
+    applyBtn.addEventListener("click", renderDashboard);
 }
 
-*unction populateMonthOptions() {
- *  startMonthSelect.innerHTML = "";*    endMonthSelect.innerHTML = "";*
+function populateMonthOptions() {
+    startMonthSelect.innerHTML = "";
+    endMonthSelect.innerHTML = "";
+
     statistics.forEach(item => {
-*       const startOption = documen*.createElement("option");
-        *tartOption.value = item.id;
-      * startOption.textContent = item.mo*th;
+        const startOption = document.createElement("option");
+        startOption.value = item.id;
+        startOption.textContent = item.month;
 
-        const endOption = doc*ment.createElement("option");
-    *   endOption.value = item.id;
-    *   endOption.textContent = item.mo*th;
+        const endOption = document.createElement("option");
+        endOption.value = item.id;
+        endOption.textContent = item.month;
 
-        startMonthSelect.appe*dChild(startOption);
-        endMo*thSelect.appendChild(endOption);
- *  });
+        startMonthSelect.appendChild(startOption);
+        endMonthSelect.appendChild(endOption);
+    });
 }
 
-function renderDashboard(* {
-    const selectedData = getSel*ctedRangeData();
+function renderDashboard() {
+    const selectedData = getSelectedRangeData();
 
-    if (selected*ata.length === 0) {
-        alert(*ไม่พบข้อมูลในช่วงเดือนที่เลือก");
-*       return;
+    if (selectedData.length === 0) {
+        alert("ไม่พบข้อมูลในช่วงเดือนที่เลือก");
+        return;
     }
 
-    const ca*culatedData = calculateAverageData*selectedData);
+    const calculatedData = calculateAverageData(selectedData);
 
-    updateTextSumm*ry(selectedData);
-    updateKpiCar*s(calculatedData, selectedData.len*th);
-    updateChart(selectedData)*
+    updateTextSummary(selectedData);
+    updateKpiCards(calculatedData, selectedData.length);
+    updateChart(selectedData);
 }
 
-function getSelectedRangeData(* {
-    const startId = startMonthS*lect.value;
-    const endId = endM*nthSelect.value;
+function getSelectedRangeData() {
+    const startId = startMonthSelect.value;
+    const endId = endMonthSelect.value;
 
-    const startI*dex = statistics.findIndex(item =>*item.id === startId);
-    const en*Index = statistics.findIndex(item *> item.id === endId);
+    const startIndex = statistics.findIndex(item => item.id === startId);
+    const endIndex = statistics.findIndex(item => item.id === endId);
 
-    if (sta*tIndex === -1 || endIndex === -1) *
+    if (startIndex === -1 || endIndex === -1) {
         return [];
     }
 
-    con*t from = Math.min(startIndex, endI*dex);
-    const to = Math.max(star*Index, endIndex);
+    const from = Math.min(startIndex, endIndex);
+    const to = Math.max(startIndex, endIndex);
 
-    return stat*stics.slice(from, to + 1);
+    return statistics.slice(from, to + 1);
 }
 
-func*ion calculateAverageData(items) {
-*   return {
+function calculateAverageData(items) {
+    return {
         onTime: {
-    *       north: average(items, "onTi*e", "north"),
-            west: av*rage(items, "onTime", "west"),
-   *        total: average(items, "onT*me", "total")
+            north: average(items, "onTime", "north"),
+            west: average(items, "onTime", "west"),
+            total: average(items, "onTime", "total")
         },
 
-        *eliability: {
-            north: a*erage(items, "reliability", "north*),
-            west: average(items* "reliability", "west"),
-         *  total: average(items, "reliabili*y", "total")
+        reliability: {
+            north: average(items, "reliability", "north"),
+            west: average(items, "reliability", "west"),
+            total: average(items, "reliability", "total")
         },
 
-        a*ailability: {
-            north: a*erage(items, "availability", "nort*"),
-            west: average(item*, "availability", "west"),
-       *    total: average(items, "availab*lity", "total")
+        availability: {
+            north: average(items, "availability", "north"),
+            west: average(items, "availability", "west"),
+            total: average(items, "availability", "total")
         },
 
-      * distance: {
-            north: av*rage(items, "distance", "north"),
-*           west: average(items, "d*stance", "west"),
-            tota*: average(items, "distance", "tota*")
+        distance: {
+            north: average(items, "distance", "north"),
+            west: average(items, "distance", "west"),
+            total: average(items, "distance", "total")
         },
 
         trips: {
-  *         north: average(items, "tr*ps", "north"),
-            west: a*erage(items, "trips", "west"),
-   *        total: average(items, "tri*s", "total")
+            north: average(items, "trips", "north"),
+            west: average(items, "trips", "west"),
+            total: average(items, "trips", "total")
         },
 
-        c*ncelled: {
-            north: aver*ge(items, "cancelled", "north"),
- *          west: average(items, "cancelled", "west"),
+        cancelled: {
+            north: average(items, "cancelled", "north"),
+            west: average(items, "cancelled", "west"),
             total: average(items, "cancelled", "total")
         }
     };
@@ -213,26 +215,29 @@ function updateChart(items) {
                 {
                     label: "ความต่อต่อเวลา",
                     data: onTimeValues,
-                    backgroundColor: "rgba(220, 38, 38, 0.82)",
-                    borderColor: "rgba(220, 38, 38, 1)",
+                    backgroundColor: "rgba(220, 38, 38, 0.86)",
+                    borderColor: "rgba(153, 27, 27, 1)",
                     borderWidth: 1,
-                    borderRadius: 10
+                    borderRadius: 12,
+                    barThickness: 30
                 },
                 {
                     label: "ความน่าเชื่อถือ",
                     data: reliabilityValues,
-                    backgroundColor: "rgba(124, 58, 237, 0.82)",
-                    borderColor: "rgba(124, 58, 237, 1)",
+                    backgroundColor: "rgba(124, 58, 237, 0.86)",
+                    borderColor: "rgba(91, 33, 182, 1)",
                     borderWidth: 1,
-                    borderRadius: 10
+                    borderRadius: 12,
+                    barThickness: 30
                 },
                 {
                     label: "ความพร้อมของขบวนรถไฟ",
                     data: availabilityValues,
-                    backgroundColor: "rgba(2, 132, 199, 0.82)",
-                    borderColor: "rgba(2, 132, 199, 1)",
+                    backgroundColor: "rgba(2, 132, 199, 0.86)",
+                    borderColor: "rgba(3, 105, 161, 1)",
                     borderWidth: 1,
-                    borderRadius: 10
+                    borderRadius: 12,
+                    barThickness: 30
                 }
             ]
         },
@@ -245,16 +250,31 @@ function updateChart(items) {
                 legend: {
                     position: "bottom",
                     labels: {
+                        color: "#334155",
+                        usePointStyle: true,
+                        pointStyle: "circle",
+                        padding: 22,
                         font: {
                             family: "Sarabun",
                             size: 14,
                             weight: "bold"
-                        },
-                        padding: 18
+                        }
                     }
                 },
 
                 tooltip: {
+                    backgroundColor: "#111827",
+                    titleFont: {
+                        family: "Sarabun",
+                        size: 14,
+                        weight: "bold"
+                    },
+                    bodyFont: {
+                        family: "Sarabun",
+                        size: 14
+                    },
+                    padding: 12,
+                    cornerRadius: 12,
                     callbacks: {
                         label: function(context) {
                             return `${context.dataset.label}: ${context.raw}%`;
@@ -268,22 +288,26 @@ function updateChart(items) {
                     min: 90,
                     max: 100,
                     ticks: {
+                        color: "#64748b",
                         callback: function(value) {
                             return value + "%";
                         },
                         font: {
-                            family: "Sarabun"
+                            family: "Sarabun",
+                            weight: "bold"
                         }
                     },
                     grid: {
-                        color: "rgba(148, 163, 184, 0.25)"
+                        color: "rgba(148, 163, 184, 0.22)"
                     }
                 },
 
                 x: {
                     ticks: {
+                        color: "#475569",
                         font: {
-                            family: "Sarabun"
+                            family: "Sarabun",
+                            weight: "bold"
                         }
                     },
                     grid: {
