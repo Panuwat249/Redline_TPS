@@ -1,72 +1,94 @@
 :root {
-    --red-950: #3f0505;
-    --red-900: #6f0808;
-    --red-800: #8f0f0f;
-    --red-700: #b91c1c;
-    --red-600: #dc2626;
-    --red-500: #ef4444;
+    --red-dark: #5b0505;
+    --red-main: #b5121b;
+    --red-bright: #ef233c;
 
-    --blue-600: #0284c7;
-    --purple-600: #7c3aed;
+    --navy: #111827;
+    --blue: #0077b6;
+    --cyan: #00b4d8;
+    --purple: #7b2cbf;
+    --orange: #f97316;
+    --green: #10b981;
 
-    --text-main: #111827;
-    --text-muted: #64748b;
-    --bg-main: #f3f5f9;
+    --bg: #f4f6fb;
     --white: #ffffff;
+    --text: #111827;
+    --muted: #64748b;
 
-    --shadow-soft: 0 22px 55px rgba(15, 23, 42, 0.12);
-    --shadow-card: 0 16px 38px rgba(15, 23, 42, 0.10);
-    --radius-xl: 32px;
-    --radius-lg: 24px;
+    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.14);
+    --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.10);
+
+    --radius-xl: 34px;
+    --radius-lg: 26px;
     --radius-md: 18px;
 }
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
     font-family: "Sarabun", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 5% 10%, rgba(239, 35, 60, 0.18), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(0, 180, 216, 0.13), transparent 24%),
+        linear-gradient(180deg, #f8fafc 0%, #edf1f7 100%);
     min-height: 100vh;
-    color: var(--text-main);
-    background:
-        radial-gradient(circle at top left, rgba(220, 38, 38, 0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.08), transparent 30%),
-        linear-gradient(180deg, #f9fafb 0%, #eef2f7 100%);
+    overflow-x: hidden;
 }
 
-/* =========================
+.page-bg-shape {
+    position: fixed;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.shape-a {
+    width: 360px;
+    height: 360px;
+    right: -160px;
+    top: 420px;
+    background: rgba(239, 35, 60, 0.08);
+}
+
+.shape-b {
+    width: 280px;
+    height: 280px;
+    left: -120px;
+    bottom: 120px;
+    background: rgba(0, 119, 182, 0.08);
+}
+
+/* ===============================
    HERO
-========================= */
+================================ */
 
-.hero {
-    position: relative;*    overflow: hidden;
-    padding:*34px 24px 86px;
-    color: #ffffff*
+.top-hero {
+    position: relat*ve;
+    overflow: hidden;
+    colo*: #fff;
     background:
-        linear-gr*dient(135deg, rgba(63, 5, 5, 0.98)*0%, rgba(111, 8, 8, 0.98) 45%, rgb*(185, 28, 28, 0.96) 100%);
+        li*ear-gradient(135deg, rgba(67, 5, 5* 0.98), rgba(126, 10, 15, 0.97) 48*, rgba(194, 18, 30, 0.96)),
+      * radial-gradient(circle at 75% 20%* rgba(255, 255, 255, 0.18), transp*rent 28%);
+    padding: 30px 24px *2px;
 }
 
-.her*::before {
-    content: "";
-    po*ition: absolute;
+.top-pattern {
+    positio*: absolute;
     inset: 0;
-   *background:
-        linear-gradien*(90deg, rgba(255,255,255,0.04) 1px* transparent 1px),
-        linear-*radient(180deg, rgba(255,255,255,0*04) 1px, transparent 1px);
-    bac*ground-size: 56px 56px;
-    opacit*: 0.45;
+    back*round:
+        linear-gradient(90d*g, rgba(255,255,255,0.05) 1px, tra*sparent 1px),
+        linear-gradi*nt(180deg, rgba(255,255,255,0.05) *px, transparent 1px);
+    backgrou*d-size: 46px 46px;
+    opacity: 0.*5;
 }
 
-.decor {
-    position: *bsolute;
-    border-radius: 999px;*    pointer-events: none;
-}
-
-.deco*-1 {
-    width: 560px;
-    height:*560px;
-    right: -210px;
-    top:*-260px;
+.top-hero::before {
+    cont*nt: "";
+    position: absolute;
+  * width: 620px;
+    height: 620px;
