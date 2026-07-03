@@ -1,4 +1,4 @@
-const window.statistics = [
+window.statistics = [
     {
         id: "2026-06",
         month: "มิถุนายน 2569",
