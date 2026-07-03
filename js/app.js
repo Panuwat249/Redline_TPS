@@ -345,7 +345,7 @@ function updateChart(items) {
 
             scales: {
                 y: {
-                    min: 99.50,
+                    min: 99.5,
                     max: 100,
                     ticks: {
                         stepSize: 0.1,
