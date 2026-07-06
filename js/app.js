@@ -1016,16 +1016,20 @@ function createPdfCoverSlide(periodText, kpiCalcText, operationCalcText) {
         <div class="pdf-slide-header">
             <div>
                 <div class="pdf-slide-kicker">RED LINE SERVICE DASHBOARD</div>
+
                 <div class="pdf-slide-title">
                     รายงานระดับการให้บริการ<br>
                     ระบบรถไฟฟ้าชานเมืองสายสีแดง
                 </div>
+
                 <div class="pdf-slide-subtitle">
                     ${periodText}
                 </div>
             </div>
 
-            <div class="pdf-badge">Monthly Performance Report</div>
+            <div class="pdf-badge">
+                Monthly Performance Report
+            </div>
         </div>
 
         <div class="pdf-grid-2" style="margin-top: 80px;">
@@ -1041,7 +1045,10 @@ function createPdfCoverSlide(periodText, kpiCalcText, operationCalcText) {
             </div>
         </div>
 
-        <div class="pdf-footer-note" style="color: rgba(255,255,255,0.78); margin-top: 110px;">
+        <div
+            class="pdf-footer-note"
+            style="color: rgba(255,255,255,0.78); margin-top: 110px;"
+        >
             บริษัท รถไฟฟ้า ร.ฟ.ท. จำกัด · ฝ่ายควบคุมการเดินรถ
         </div>
     `;
