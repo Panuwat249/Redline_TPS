@@ -249,10 +249,10 @@ body {
 
 .hero-left h1 {
     max-width: 760px;
-    font-size: clamp(34px, 5.8vw, 76px);
-    line-height: 1.08;
+    font-size: clamp(32px, 4.2vw, 54px);
+    line-height: 1.15;
     font-weight: 900;
-    letter-spacing: -1.7px;
+    letter-spacing: -0.8px;
 }
 
 .hero-subtitle {
@@ -954,8 +954,9 @@ footer {
     }
 
     .hero-left h1 {
-        font-size: 40px;
-        letter-spacing: -1px;
+        font-size: 32px;
+        line-height: 1.18;
+        letter-spacing: -0.5px;
     }
 
     .hero-subtitle {
