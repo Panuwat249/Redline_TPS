@@ -28,6 +28,16 @@ function init() {
     document
         .getElementById("applyBtn")
         .addEventListener("click", renderDashboard);
+        const exportPdfBtn = document.getElementById("exportPdfBtn");
+        const exportExcelBtn = document.getElementById("exportExcelBtn");
+
+        if (exportPdfBtn) {
+            exportPdfBtn.addEventListener("click", exportDashboardToPdf);
+        }
+
+        if (exportExcelBtn) {
+            exportExcelBtn.addEventListener("click", exportDashboardToExcel);
+        }
 }
 
 function populateMonthOptions(data) {
@@ -590,4 +600,361 @@ function createSingleBarChart(config) {
             }
         }
     });
+}
+
+async function exportDashboardToPdf() {
+    if (typeof html2canvas === "undefined") {
+        alert("ไม่พบ html2canvas กรุณาตรวจสอบ CDN ใน index.html");
+        return;
+    }
+
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+        alert("ไม่พบ jsPDF กรุณาตรวจสอบ CDN ใน index.html");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    const target = document.querySelector("body");
+
+    document.body.classList.add("exporting");
+
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const canvas = await html2canvas(target, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#f8fafc",
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight
+    });
+
+    document.body.classList.remove("exporting");
+
+    const imgData = canvas.toDataURL("image/jpeg", 0.95);
+
+    const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const margin = 8;
+    const imgWidth = pageWidth - margin * 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = margin;
+
+    pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+
+    heightLeft -= pageHeight - margin * 2;
+
+    while (heightLeft > 0) {
+        pdf.addPage();
+        position = heightLeft - imgHeight + margin;
+        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight - margin * 2;
+    }
+
+    const fileName = getExportFileName("pdf");
+
+    pdf.save(fileName);
+}
+
+function exportDashboardToExcel() {
+    if (typeof XLSX === "undefined") {
+        alert("ไม่พบ XLSX กรุณาตรวจสอบ CDN xlsx-js-style ใน index.html");
+        return;
+    }
+
+    const selectedData = getSelectedRangeData();
+
+    if (!selectedData || selectedData.length === 0) {
+        alert("ไม่พบข้อมูลสำหรับนำออก Excel");
+        return;
+    }
+
+    const calculatedData = calculateDisplayData(selectedData);
+
+    const wb = XLSX.utils.book_new();
+
+    const rows = buildDashboardExcelRows(selectedData, calculatedData);
+
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+
+    styleDashboardWorksheet(ws, rows);
+
+    ws["!cols"] = [
+        { wch: 28 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 }
+    ];
+
+    ws["!merges"] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } },
+        { s: { r: 1, c: 0 }, e: { r: 1, c: 3 } }
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, "Dashboard Summary");
+
+    const rawRows = buildRawDataRows(selectedData);
+    const rawWs = XLSX.utils.aoa_to_sheet(rawRows);
+
+    rawWs["!cols"] = [
+        { wch: 18 },
+        { wch: 16 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 },
+        { wch: 18 }
+    ];
+
+    XLSX.utils.book_append_sheet(wb, rawWs, "Monthly Data");
+
+    XLSX.writeFile(wb, getExportFileName("xlsx"));
+}
+
+function buildDashboardExcelRows(selectedData, calculatedData) {
+    const first = selectedData[0];
+    const last = selectedData[selectedData.length - 1];
+
+    const periodText =
+        selectedData.length === 1
+            ? first.month
+            : `${first.month} ถึง ${last.month}`;
+
+    const kpiCalcText =
+        selectedData.length === 1
+            ? "แสดงค่าของเดือนที่เลือก"
+            : `KPI เฉลี่ยจาก ${selectedData.length} เดือน`;
+
+    const operationCalcText =
+        selectedData.length === 1
+            ? "แสดงค่าของเดือนที่เลือก"
+            : `ข้อมูลการเดินรถเป็นผลรวมจาก ${selectedData.length} เดือน`;
+
+    return [
+        ["Red Line Service Performance Dashboard", "", "", ""],
+        [`ช่วงข้อมูล: ${periodText}`, "", "", ""],
+        [],
+        ["หมวดข้อมูล", "รวมทั้ง 2 สาย", "สายเหนือ", "สายตะวันตก"],
+
+        [
+            "ความตรงต่อเวลา ไม่เกิน 5 นาที (%)",
+            formatPercent(calculatedData.punctuality5.total),
+            formatPercent(calculatedData.punctuality5.north),
+            formatPercent(calculatedData.punctuality5.west)
+        ],
+        [
+            "ความตรงต่อเวลา ไม่เกิน 10 นาที (%)",
+            formatPercent(calculatedData.onTime.total),
+            formatPercent(calculatedData.onTime.north),
+            formatPercent(calculatedData.onTime.west)
+        ],
+        [
+            "ความน่าเชื่อถือ (%)",
+            formatPercent(calculatedData.reliability.total),
+            formatPercent(calculatedData.reliability.north),
+            formatPercent(calculatedData.reliability.west)
+        ],
+        [
+            "ความพร้อมของขบวนรถไฟ (%)",
+            formatPercent(calculatedData.availability.total),
+            formatPercent(calculatedData.availability.north),
+            formatPercent(calculatedData.availability.west)
+        ],
+
+        [],
+        ["รูปแบบการคำนวณ KPI", kpiCalcText, "", ""],
+        ["รูปแบบการคำนวณ Operation", operationCalcText, "", ""],
+
+        [],
+        ["ข้อมูลการเดินรถและการให้บริการ", "รวมทั้ง 2 สาย", "สายเหนือ", "สายตะวันตก"],
+        [
+            "ระยะทางที่วิ่งให้บริการ (กม.)",
+            formatNumber(calculatedData.distance.total),
+            formatNumber(calculatedData.distance.north),
+            formatNumber(calculatedData.distance.west)
+        ],
+        [
+            "จำนวนเที่ยววิ่งที่ให้บริการ (เที่ยว)",
+            formatNumber(calculatedData.trips.total),
+            formatNumber(calculatedData.trips.north),
+            formatNumber(calculatedData.trips.west)
+        ],
+        [
+            "การยกเลิกเที่ยววิ่ง (เที่ยว)",
+            formatNumber(calculatedData.cancelled.total),
+            formatNumber(calculatedData.cancelled.north),
+            formatNumber(calculatedData.cancelled.west)
+        ]
+    ];
+}
+
+function buildRawDataRows(selectedData) {
+    const rows = [
+        [
+            "เดือน",
+            "TSP 5 รวม",
+            "TSP 5 สายเหนือ",
+            "TSP 5 สายตะวันตก",
+            "TSP 10 รวม",
+            "TSP 10 สายเหนือ",
+            "TSP 10 สายตะวันตก",
+            "TSA รวม",
+            "TA รวม",
+            "ระยะทางรวม",
+            "เที่ยวจริงรวม",
+            "ยกเลิกรวม"
+        ]
+    ];
+
+    selectedData.forEach(item => {
+        rows.push([
+            item.month,
+            formatPercent(item.punctuality5.total),
+            formatPercent(item.punctuality5.north),
+            formatPercent(item.punctuality5.west),
+            formatPercent(item.onTime.total),
+            formatPercent(item.onTime.north),
+            formatPercent(item.onTime.west),
+            formatPercent(item.reliability.total),
+            formatPercent(item.availability.total),
+            formatNumber(item.distance.total),
+            formatNumber(item.trips.total),
+            formatNumber(item.cancelled.total)
+        ]);
+    });
+
+    return rows;
+}
+
+function styleDashboardWorksheet(ws, rows) {
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    for (let row = range.s.r; row <= range.e.r; row++) {
+        for (let col = range.s.c; col <= range.e.c; col++) {
+            const cellRef = XLSX.utils.encode_cell({ r: row, c: col });
+
+            if (!ws[cellRef]) {
+                continue;
+            }
+
+            ws[cellRef].s = {
+                font: {
+                    name: "Sarabun",
+                    sz: 11,
+                    color: { rgb: "111827" }
+                },
+                alignment: {
+                    vertical: "center",
+                    horizontal: col === 0 ? "left" : "center",
+                    wrapText: true
+                },
+                border: {
+                    top: { style: "thin", color: { rgb: "E2E8F0" } },
+                    bottom: { style: "thin", color: { rgb: "E2E8F0" } },
+                    left: { style: "thin", color: { rgb: "E2E8F0" } },
+                    right: { style: "thin", color: { rgb: "E2E8F0" } }
+                }
+            };
+        }
+    }
+
+    // Title row
+    ws["A1"].s = {
+        font: {
+            name: "Sarabun",
+            sz: 18,
+            bold: true,
+            color: { rgb: "FFFFFF" }
+        },
+        alignment: {
+            horizontal: "center",
+            vertical: "center"
+        },
+        fill: {
+            patternType: "solid",
+            fgColor: { rgb: "7F0B0B" }
+        }
+    };
+
+    // Period row
+    ws["A2"].s = {
+        font: {
+            name: "Sarabun",
+            sz: 12,
+            bold: true,
+            color: { rgb: "7F0B0B" }
+        },
+        alignment: {
+            horizontal: "center",
+            vertical: "center"
+        },
+        fill: {
+            patternType: "solid",
+            fgColor: { rgb: "FEE2E2" }
+        }
+    };
+
+    // Header rows
+    [3, 12].forEach(rowIndexZeroBased => {
+        for (let col = 0; col <= 3; col++) {
+            const cellRef = XLSX.utils.encode_cell({
+                r: rowIndexZeroBased,
+                c: col
+            });
+
+            if (ws[cellRef]) {
+                ws[cellRef].s = {
+                    font: {
+                        name: "Sarabun",
+                        sz: 11,
+                        bold: true,
+                        color: { rgb: "FFFFFF" }
+                    },
+                    alignment: {
+                        horizontal: "center",
+                        vertical: "center",
+                        wrapText: true
+                    },
+                    fill: {
+                        patternType: "solid",
+                        fgColor: { rgb: "A1121B" }
+                    },
+                    border: {
+                        top: { style: "thin", color: { rgb: "FFFFFF" } },
+                        bottom: { style: "thin", color: { rgb: "FFFFFF" } },
+                        left: { style: "thin", color: { rgb: "FFFFFF" } },
+                        right: { style: "thin", color: { rgb: "FFFFFF" } }
+                    }
+                };
+            }
+        }
+    });
+}
+
+function getExportFileName(extension) {
+    const selectedData = getSelectedRangeData();
+    const first = selectedData[0];
+    const last = selectedData[selectedData.length - 1];
+
+    const rangeText =
+        selectedData.length === 1
+            ? first.id
+            : `${first.id}_to_${last.id}`;
+
+    return `redline-dashboard-${rangeText}.${extension}`;
 }
