@@ -613,58 +613,58 @@ async function exportDashboardToPdf() {
         return;
     }
 
+    const selectedData = getSelectedRangeData();
+
+    if (!selectedData || selectedData.length === 0) {
+        alert("ไม่พบข้อมูลสำหรับนำออก PDF");
+        return;
+    }
+
+    const calculatedData = calculateDisplayData(selectedData);
+
+    const root = buildPdfSlides(selectedData, calculatedData);
+    document.body.appendChild(root);
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     const { jsPDF } = window.jspdf;
 
-    const target = document.querySelector("body");
-
-    document.body.classList.add("exporting");
-
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    const canvas = await html2canvas(target, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#f8fafc",
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: document.documentElement.scrollWidth,
-        windowHeight: document.documentElement.scrollHeight
-    });
-
-    document.body.classList.remove("exporting");
-
-    const imgData = canvas.toDataURL("image/jpeg", 0.95);
-
     const pdf = new jsPDF({
-        orientation: "portrait",
+        orientation: "landscape",
         unit: "mm",
         format: "a4"
     });
 
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    const slides = root.querySelectorAll(".pdf-slide");
 
-    const margin = 8;
-    const imgWidth = pageWidth - margin * 2;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    for (let i = 0; i < slides.length; i++) {
+        const slide = slides[i];
 
-    let heightLeft = imgHeight;
-    let position = margin;
+        const canvas = await html2canvas(slide, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#f8fafc",
+            scrollX: 0,
+            scrollY: 0,
+            width: slide.offsetWidth,
+            height: slide.offsetHeight
+        });
 
-    pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
+        const imgData = canvas.toDataURL("image/jpeg", 0.95);
 
-    heightLeft -= pageHeight - margin * 2;
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
 
-    while (heightLeft > 0) {
-        pdf.addPage();
-        position = heightLeft - imgHeight + margin;
-        pdf.addImage(imgData, "JPEG", margin, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight - margin * 2;
+        if (i > 0) {
+            pdf.addPage();
+        }
+
+        pdf.addImage(imgData, "JPEG", 0, 0, pageWidth, pageHeight);
     }
 
-    const fileName = getExportFileName("pdf");
+    document.body.removeChild(root);
 
-    pdf.save(fileName);
+    pdf.save(getExportFileName("pdf"));
 }
 
 function exportDashboardToExcel() {
@@ -957,4 +957,297 @@ function getExportFileName(extension) {
             : `${first.id}_to_${last.id}`;
 
     return `redline-dashboard-${rangeText}.${extension}`;
+}
+
+function buildPdfSlides(selectedData, calculatedData) {
+    const first = selectedData[0];
+    const last = selectedData[selectedData.length - 1];
+
+    const periodText =
+        selectedData.length === 1
+            ? first.month
+            : `${first.month} ถึง ${last.month}`;
+
+    const kpiCalcText =
+        selectedData.length === 1
+            ? "แสดงค่าของเดือนที่เลือก"
+            : `KPI เฉลี่ยจาก ${selectedData.length} เดือน`;
+
+    const operationCalcText =
+        selectedData.length === 1
+            ? "แสดงค่าของเดือนที่เลือก"
+            : `ข้อมูลการเดินรถเป็นผลรวมจาก ${selectedData.length} เดือน`;
+
+    const root = document.createElement("div");
+    root.className = "pdf-export-root";
+
+    root.appendChild(
+        createPdfCoverSlide(periodText, kpiCalcText, operationCalcText)
+    );
+
+    root.appendChild(
+        createPdfKpiSlide(calculatedData)
+    );
+
+    root.appendChild(
+        createPdfOperationSlide(calculatedData, operationCalcText)
+    );
+
+    const chartSlides = createPdfChartSlides();
+
+    chartSlides.forEach(slide => {
+        root.appendChild(slide);
+    });
+
+    return root;
+}
+
+function createPdfCoverSlide(periodText, kpiCalcText, operationCalcText) {
+    const slide = document.createElement("section");
+    slide.className = "pdf-slide pdf-slide-cover";
+
+    slide.innerHTML = `
+        <div class="pdf-slide-header">
+            <div>
+                <div class="pdf-slide-kicker">RED LINE SERVICE DASHBOARD</div>
+                <div class="pdf-slide-title">
+                    รายงานระดับการให้บริการ<br>
+                    ระบบรถไฟฟ้าชานเมืองสายสีแดง
+                </div>
+                <div class="pdf-slide-subtitle">
+                    ${periodText}
+                </div>
+            </div>
+
+            <div class="pdf-badge">Monthly Performance Report</div>
+        </div>
+
+        <div class="pdf-grid-2" style="margin-top: 80px;">
+            <div class="pdf-card">
+                <div class="pdf-card-title">ช่วงข้อมูลที่แสดง</div>
+                <div class="pdf-card-name">${periodText}</div>
+            </div>
+
+            <div class="pdf-card">
+                <div class="pdf-card-title">รูปแบบการคำนวณ</div>
+                <div class="pdf-card-name">${kpiCalcText}</div>
+                <div class="pdf-card-note">${operationCalcText}</div>
+            </div>
+        </div>
+
+        <div class="pdf-footer-note" style="color: rgba(255,255,255,0.78); margin-top: 110px;">
+            บริษัท รถไฟฟ้า ร.ฟ.ท. จำกัด · ฝ่ายควบคุมการเดินรถ
+        </div>
+    `;
+
+    return slide;
+}
+
+function createPdfKpiSlide(data) {
+    const slide = document.createElement("section");
+    slide.className = "pdf-slide";
+
+    slide.innerHTML = `
+        <div class="pdf-slide-header">
+            <div>
+                <div class="pdf-slide-kicker">KPI SUMMARY</div>
+                <div class="pdf-slide-title">ภาพรวมประสิทธิภาพการเดินรถ</div>
+                <div class="pdf-slide-subtitle">
+                    สรุปค่าดัชนีหลัก แยกตามรวมทั้ง 2 สาย / สายเหนือ / สายตะวันตก
+                </div>
+            </div>
+
+            <div class="pdf-badge">KPI</div>
+        </div>
+
+        <div class="pdf-grid-2">
+            ${createPdfMetricCard({
+                theme: "pdf-red",
+                code: "TSP 5 MIN",
+                title: "ความตรงต่อเวลา",
+                note: "ความล่าช้าไม่เกิน 5 นาที",
+                total: formatPercent(data.punctuality5.total),
+                north: formatPercent(data.punctuality5.north),
+                west: formatPercent(data.punctuality5.west)
+            })}
+
+            ${createPdfMetricCard({
+                theme: "pdf-red",
+                code: "TSP 10 MIN",
+                title: "ความตรงต่อเวลา",
+                note: "ความล่าช้าไม่เกิน 10 นาที",
+                total: formatPercent(data.onTime.total),
+                north: formatPercent(data.onTime.north),
+                west: formatPercent(data.onTime.west)
+            })}
+
+            ${createPdfMetricCard({
+                theme: "pdf-purple",
+                code: "TSA",
+                title: "ความน่าเชื่อถือ",
+                note: "Train Service Availability",
+                total: formatPercent(data.reliability.total),
+                north: formatPercent(data.reliability.north),
+                west: formatPercent(data.reliability.west)
+            })}
+
+            ${createPdfMetricCard({
+                theme: "pdf-blue",
+                code: "TA",
+                title: "ความพร้อมของขบวนรถไฟ",
+                note: "Train Availability",
+                total: formatPercent(data.availability.total),
+                north: formatPercent(data.availability.north),
+                west: formatPercent(data.availability.west)
+            })}
+        </div>
+    `;
+
+    return slide;
+}
+
+function createPdfOperationSlide(data, operationCalcText) {
+    const slide = document.createElement("section");
+    slide.className = "pdf-slide";
+
+    slide.innerHTML = `
+        <div class="pdf-slide-header">
+            <div>
+                <div class="pdf-slide-kicker">OPERATION SUMMARY</div>
+                <div class="pdf-slide-title">ข้อมูลการเดินรถและการให้บริการ</div>
+                <div class="pdf-slide-subtitle">${operationCalcText}</div>
+            </div>
+
+            <div class="pdf-badge">Operation</div>
+        </div>
+
+        <div class="pdf-grid-3">
+            ${createPdfMetricCard({
+                theme: "pdf-orange",
+                code: "OPR 01",
+                title: "ระยะทางที่วิ่งให้บริการ",
+                note: "หน่วย: กิโลเมตร",
+                total: formatNumber(data.distance.total),
+                north: formatNumber(data.distance.north),
+                west: formatNumber(data.distance.west)
+            })}
+
+            ${createPdfMetricCard({
+                theme: "pdf-green",
+                code: "OPR 02",
+                title: "จำนวนเที่ยววิ่งที่ให้บริการ",
+                note: "หน่วย: เที่ยว",
+                total: formatNumber(data.trips.total),
+                north: formatNumber(data.trips.north),
+                west: formatNumber(data.trips.west)
+            })}
+
+            ${createPdfMetricCard({
+                theme: "pdf-red",
+                code: "OPR 03",
+                title: "การยกเลิกเที่ยววิ่ง",
+                note: "หน่วย: เที่ยว",
+                total: formatNumber(data.cancelled.total),
+                north: formatNumber(data.cancelled.north),
+                west: formatNumber(data.cancelled.west)
+            })}
+        </div>
+    `;
+
+    return slide;
+}
+
+function createPdfMetricCard(config) {
+    return `
+        <div class="pdf-card ${config.theme}">
+            <div class="pdf-card-title">${config.code}</div>
+            <div class="pdf-card-name">${config.title}</div>
+            <div class="pdf-card-note">${config.note}</div>
+
+            <div class="pdf-value-box">
+                <div class="pdf-value-label">รวมทั้ง 2 สาย</div>
+                <div class="pdf-value">${config.total}</div>
+            </div>
+
+            <div class="pdf-split">
+                <div class="pdf-split-item">
+                    <span>สายเหนือ</span>
+                    <strong>${config.north}</strong>
+                </div>
+
+                <div class="pdf-split-item">
+                    <span>สายตะวันตก</span>
+                    <strong>${config.west}</strong>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function createPdfChartSlides() {
+    const chartConfigs = [
+        {
+            id: "performanceChart",
+            title: "กราฟเปรียบเทียบค่าดัชนีหลัก",
+            subtitle: "กราฟรวม KPI ทั้งหมด",
+            badge: "Overview Chart"
+        },
+        {
+            id: "punctuality5Chart",
+            title: "ความตรงต่อเวลา",
+            subtitle: "ความล่าช้าไม่เกิน 5 นาที",
+            badge: "TSP 5 Min"
+        },
+        {
+            id: "onTimeChart",
+            title: "ความตรงต่อเวลา",
+            subtitle: "ความล่าช้าไม่เกิน 10 นาที",
+            badge: "TSP 10 Min"
+        },
+        {
+            id: "reliabilityChart",
+            title: "ความน่าเชื่อถือ",
+            subtitle: "Train Service Availability (TSA)",
+            badge: "Reliability"
+        },
+        {
+            id: "availabilityChart",
+            title: "ความพร้อมของขบวนรถไฟ",
+            subtitle: "Train Availability (TA)",
+            badge: "Availability"
+        }
+    ];
+
+    const slides = [];
+
+    chartConfigs.forEach(config => {
+        const canvas = document.getElementById(config.id);
+
+        if (!canvas) {
+            return;
+        }
+
+        const image = canvas.toDataURL("image/png");
+
+        const slide = document.createElement("section");
+        slide.className = "pdf-slide";
+
+        slide.innerHTML = `
+            <div class="pdf-slide-header">
+                <div>
+                    <div class="pdf-slide-kicker">MONTHLY PERFORMANCE</div>
+                    <div class="pdf-slide-title">${config.title}</div>
+                    <div class="pdf-slide-subtitle">${config.subtitle}</div>
+                </div>
+
+                <div class="pdf-badge">${config.badge}</div>
+            </div>
+
+            ${image}
+        `;
+
+        slides.push(slide);
+    });
+
+    return slides;
 }
