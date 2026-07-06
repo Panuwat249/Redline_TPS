@@ -622,10 +622,16 @@ async function exportDashboardToPdf() {
 
     const calculatedData = calculateDisplayData(selectedData);
 
+    // รอให้ Chart.js วาดกราฟบนหน้าเว็บให้เสร็จก่อน
+    await new Promise(resolve => setTimeout(resolve, 800));
+
     const root = buildPdfSlides(selectedData, calculatedData);
     document.body.appendChild(root);
 
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // รอให้รูปกราฟใน slide โหลดก่อนจับเป็น PDF
+    await waitForPdfImages(root);
+
+    await new Promise(resolve => setTimeout(resolve, 300));
 
     const { jsPDF } = window.jspdf;
 
@@ -1224,10 +1230,18 @@ function createPdfChartSlides() {
         const canvas = document.getElementById(config.id);
 
         if (!canvas) {
+            console.warn(`ไม่พบกราฟ id="${config.id}"`);
             return;
         }
 
-        const image = canvas.toDataURL("image/png");
+        let image = "";
+
+        try {
+            image = canvas.toDataURL("image/png");
+        } catch (error) {
+            console.warn(`ไม่สามารถแปลงกราฟ ${config.id} เป็นรูปภาพได้`, error);
+            return;
+        }
 
         const slide = document.createElement("section");
         slide.className = "pdf-slide";
@@ -1250,4 +1264,25 @@ function createPdfChartSlides() {
     });
 
     return slides;
+}
+
+function waitForPdfImages(root) {
+    const images = Array.from(root.querySelectorAll("img"));
+
+    if (images.length === 0) {
+        return Promise.resolve();
+    }
+
+    const promises = images.map(img => {
+        if (img.complete) {
+            return Promise.resolve();
+        }
+
+        return new Promise(resolve => {
+            img.onload = resolve;
+            img.onerror = resolve;
+        });
+    });
+
+    return Promise.all(promises);
 }
