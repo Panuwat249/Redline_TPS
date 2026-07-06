@@ -20,6 +20,15 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- html2canvas: ใช้จับหน้า Dashboard เป็นรูป -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- jsPDF: ใช้สร้าง PDF -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.0.0/jspdf.umd.min.js"></script>
+
+    <!-- xlsx-js-style: ใช้สร้าง Excel พร้อมสีและ style -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
+
     <!-- Chart.js Data Labels Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 
@@ -118,6 +127,16 @@
                     <button id="applyBtn">
                         แสดงผล Dashboard
                     </button>
+                  
+                    <div class="export-actions">
+                        <button id="exportPdfBtn" type="button" class="export-btn pdf-btn">
+                            นำออก PDF
+                        </button>
+
+                        <button id="exportExcelBtn" type="button" class="export-btn excel-btn">
+                            นำออก Excel
+                        </button>
+                    </div>
 
                     <p>
                         เลือกเดือนเดียวจะแสดงค่าของเดือนนั้น
