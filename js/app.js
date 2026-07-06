@@ -623,12 +623,12 @@ async function exportDashboardToPdf() {
     const calculatedData = calculateDisplayData(selectedData);
 
     // รอให้ Chart.js วาดกราฟบนหน้าเว็บให้เสร็จก่อน
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await waitForChartsReady();
 
     const root = buildPdfSlides(selectedData, calculatedData);
     document.body.appendChild(root);
 
-    // รอให้รูปกราฟใน slide โหลดก่อนจับเป็น PDF
+    // รอให้รูปกราฟใน PDF slide โหลดครบก่อนจับภาพ
     await waitForPdfImages(root);
 
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -1200,31 +1200,36 @@ function createPdfMetricCard(config) {
 function createPdfChartSlides() {
     const chartConfigs = [
         {
-            id: "performanceChart",
+            chartInstance: performanceChart,
+            canvasId: "performanceChart",
             title: "กราฟเปรียบเทียบค่าดัชนีหลัก",
             subtitle: "กราฟรวม KPI ทั้งหมด",
             badge: "Overview Chart"
         },
         {
-            id: "punctuality5Chart",
+            chartInstance: punctuality5Chart,
+            canvasId: "punctuality5Chart",
             title: "ความตรงต่อเวลา",
             subtitle: "ความล่าช้าไม่เกิน 5 นาที",
             badge: "TSP 5 Min"
         },
         {
-            id: "onTimeChart",
+            chartInstance: onTimeChart,
+            canvasId: "onTimeChart",
             title: "ความตรงต่อเวลา",
             subtitle: "ความล่าช้าไม่เกิน 10 นาที",
             badge: "TSP 10 Min"
         },
         {
-            id: "reliabilityChart",
+            chartInstance: reliabilityChart,
+            canvasId: "reliabilityChart",
             title: "ความน่าเชื่อถือ",
             subtitle: "Train Service Availability (TSA)",
             badge: "Reliability"
         },
         {
-            id: "availabilityChart",
+            chartInstance: availabilityChart,
+            canvasId: "availabilityChart",
             title: "ความพร้อมของขบวนรถไฟ",
             subtitle: "Train Availability (TA)",
             badge: "Availability"
@@ -1234,22 +1239,40 @@ function createPdfChartSlides() {
     const slides = [];
 
     chartConfigs.forEach(config => {
-        const canvas = document.getElementById(config.id);
-
-        if (!canvas) {
-            console.warn(`ไม่พบกราฟ id="${config.id}"`);
-            return;
-        }
-
         let image = "";
 
-        try {
-            image = canvas.toDataURL("image/png");
-        } catch (error) {
-            console.warn(`ไม่สามารถแปลงกราฟ ${config.id} เป็นรูปภาพได้`, error);
-            return;
+        /*
+            วิธีที่ 1: ดึงรูปจาก Chart.js instance โดยตรง
+            วิธีนี้ชัวร์กว่าดึงจาก canvas เฉย ๆ
+        */
+        if (config.chartInstance && typeof config.chartInstance.toBase64Image === "function") {
+            image = config.chartInstance.toBase64Image();
         }
 
+        /*
+            วิธีที่ 2: fallback ถ้า instance ไม่มี ให้ดึงจาก canvas
+        */
+        if (!image) {
+   *        const canvas = document.ge*ElementById(config.canvasId);
+
+            if (!canvas) {
+                console.warn(`ไม่พบ canvas id="${config.canvasId}"`);
+                return;
+            }
+
+            try {
+                image = canvas.toDataURL("image/png");
+            } catch (error) {
+                console.warn(`ไม่สามารถแปลงกราฟ ${config.canvasId} เป็นรูปภาพได้`, error);
+                return;
+            }
+        }
+
+        /*
+            สำคัญมาก:
+            ต้องใส่เป็น <img src="...">
+       แค่ ${image} เฉย ๆ เพราะมันจะกลายเป็น text
+        */
         const slide = document.createElement("section");
         slide.className = "pdf-slide";
 
