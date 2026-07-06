@@ -1359,3 +1359,22 @@ footer {
     font-size: 13px;
     font-weight: 700;
 }
+
+/* =========================
+   CHART STACK
+========================= */
+
+.chart-stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 38px;
+}
+
+.chart-stack .chart-card {
+    margin-top: 0;
+}
+
+.chart-stack .chart-wrap {
+    height: 380px;
+}
