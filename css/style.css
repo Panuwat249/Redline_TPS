@@ -1049,3 +1049,53 @@ footer {
 .chart-stack .chart-wrap {
     height: 380px;
 }
+
+/* =========================
+   EXPORT BUTTONS
+========================= */
+
+.export-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.export-btn {
+    width: 100%;
+    padding: 13px 14px;
+    border: none;
+    border-radius: 16px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    transition: 0.2s ease;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+.pdf-btn {
+    background: linear-gradient(135deg, #991b1b, #ef233c);
+}
+
+.excel-btn {
+    background: linear-gradient(135deg, #047857, #10b981);
+}
+
+@media (max-width: 760px) {
+    .export-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ซ่อนปุ่มขณะ Export PDF เพื่อไม่ให้ติดไปในรายงาน */
+.exporting .filter-card,
+.exporting .dashboard-pill {
+    display: none !important;
+}
