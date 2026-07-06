@@ -301,7 +301,7 @@ function updateChart(items) {
                     color: "#111827",
                     font: {
                         family: "Sarabun",
-                        size: 12,
+                        size: 16,
                         weight: "bold"
                     },
                     formatter: function(value) {               
