@@ -78,8 +78,9 @@ function renderDashboard() {
     updateChart(selectedData);
 
     // กราฟแยกรายตัว 4 กราฟด้านล่าง
-    updateSeparateCharts(selectedData);
-
+    if (typeof updateSeparateCharts === "function") {
+        updateSeparateCharts(selectedData);
+    }
 }
 
 function getSelectedRangeData() {
@@ -1200,35 +1201,30 @@ function createPdfMetricCard(config) {
 function createPdfChartSlides() {
     const chartConfigs = [
         {
-            chartInstance: performanceChart,
             canvasId: "performanceChart",
             title: "กราฟเปรียบเทียบค่าดัชนีหลัก",
             subtitle: "กราฟรวม KPI ทั้งหมด",
             badge: "Overview Chart"
         },
         {
-            chartInstance: punctuality5Chart,
             canvasId: "punctuality5Chart",
             title: "ความตรงต่อเวลา",
             subtitle: "ความล่าช้าไม่เกิน 5 นาที",
             badge: "TSP 5 Min"
         },
         {
-            chartInstance: onTimeChart,
             canvasId: "onTimeChart",
             title: "ความตรงต่อเวลา",
             subtitle: "ความล่าช้าไม่เกิน 10 นาที",
             badge: "TSP 10 Min"
         },
         {
-            chartInstance: reliabilityChart,
             canvasId: "reliabilityChart",
             title: "ความน่าเชื่อถือ",
             subtitle: "Train Service Availability (TSA)",
             badge: "Reliability"
         },
         {
-            chartInstance: availabilityChart,
             canvasId: "availabilityChart",
             title: "ความพร้อมของขบวนรถไฟ",
             subtitle: "Train Availability (TA)",
@@ -1239,40 +1235,27 @@ function createPdfChartSlides() {
     const slides = [];
 
     chartConfigs.forEach(config => {
+        const canvas = document.getElementById(config.canvasId);
+
+        if (!canvas) {
+            console.warn(`ไม่พบ canvas id="${config.canvasId}"`);
+            return;
+        }
+
         let image = "";
 
-        /*
-            วิธีที่ 1: ดึงรูปจาก Chart.js instance โดยตรง
-            วิธีนี้ชัวร์กว่าดึงจาก canvas เฉย ๆ
-        */
-        if (config.chartInstance && typeof config.chartInstance.toBase64Image === "function") {
-            image = config.chartInstance.toBase64Image();
+        try {
+            image = canvas.toDataURL("image/png");
+        } catch (error) {
+            console.warn(`ไม่สามารถแปลงกราฟ ${config.canvasId} เป็นรูปภาพได้`, error);
+            return;
         }
 
-        /*
-            วิธีที่ 2: fallback ถ้า instance ไม่มี ให้ดึงจาก canvas
-        */
-        if (!image) {
-   *        const canvas = document.ge*ElementById(config.canvasId);
-
-            if (!canvas) {
-                console.warn(`ไม่พบ canvas id="${config.canvasId}"`);
-                return;
-            }
-
-            try {
-                image = canvas.toDataURL("image/png");
-            } catch (error) {
-                console.warn(`ไม่สามารถแปลงกราฟ ${config.canvasId} เป็นรูปภาพได้`, error);
-                return;
-            }
+        if (!image || image === "data:,") {
+            console.warn(`กราฟ ${config.canvasId} ยังไม่มีรูปภาพ`);
+            return;
         }
 
-        /*
-            สำคัญมาก:
-            ต้องใส่เป็น <img src="...">
-       แค่ ${image} เฉย ๆ เพราะมันจะกลายเป็น text
-        */
         const slide = document.createElement("section");
         slide.className = "pdf-slide";
 
