@@ -260,11 +260,12 @@ function updateChart(items) {
             labels: labels,
 
             datasets: [
-                {
-                    label: "ความต่อต่อเวลาล่าช้าไม่เกิน 10 นาที",
-                    data: items.map(item => item.onTime.total),
-                    backgroundColor: "rgba(239, 35, 60, 0.88)",
-                    borderColor: "rgba(181, 18, 27, 1)",
+
+                 {
+                    label: "ความตรงต่อเวลาล่าช้าไม่เกิน 5 นาที",
+                    data: items.map(item => item.punctuality5.total),
+                    backgroundColor: "rgba(244, 63, 94, 0.78)",
+                    borderColor: "rgba(190, 18, 60, 1)",
                     borderWidth: 1,
                     borderRadius: 14,
                     barPercentage: 0.7,
@@ -272,10 +273,10 @@ function updateChart(items) {
                 },
                 
                 {
-                    label: "ความตรงต่อเวลาล่าช้าไม่เกิน 5 นาที",
-                    data: items.map(item => item.punctuality5.total),
-                    backgroundColor: "rgba(244, 63, 94, 0.78)",
-                    borderColor: "rgba(190, 18, 60, 1)",
+                    label: "ความต่อต่อเวลาล่าช้าไม่เกิน 10 นาที",
+                    data: items.map(item => item.onTime.total),
+                    backgroundColor: "rgba(239, 35, 60, 0.88)",
+                    borderColor: "rgba(181, 18, 27, 1)",
                     borderWidth: 1,
                     borderRadius: 14,
                     barPercentage: 0.7,
